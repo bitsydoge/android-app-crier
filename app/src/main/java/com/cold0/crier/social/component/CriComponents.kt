@@ -1,10 +1,12 @@
-package com.cold0.crier.social
+package com.cold0.crier.social.component
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -21,13 +23,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
+import com.cold0.crier.social.R
 import com.cold0.crier.social.data.DummyData.getRandomCri
 import com.cold0.crier.social.model.Cri
 import com.cold0.crier.social.theme.ColorUtils.grayed
@@ -35,7 +41,7 @@ import com.cold0.crier.social.theme.CrierSocialTheme
 import java.io.File
 
 @Composable
-fun CriItem(cri: Cri) {
+fun CriComponent(cri: Cri) {
     Row(
         modifier = Modifier
             .padding(all = 10.dp)
@@ -99,9 +105,47 @@ private fun CriUserInfo(cri: Cri) {
 
 @Composable
 private fun CriContent(cri: Cri) {
-    Text(
-        text = cri.content,
-        style = TextStyle(fontSize = 14.sp)
+    var numberClickable = 0
+    val textAnnotated = buildAnnotatedString {
+        val splits = cri.content.split("#") // Split text with # so all odd index start with a #hashtag
+        splits.forEachIndexed { i, split ->
+            if (i % 2 == 1) {
+                val splitWhitespace = split.split("\\s+".toRegex()) // Split text with whitespace
+                pushStringAnnotation(
+                    tag = "$numberClickable",
+                    annotation = splitWhitespace[0]
+                )
+                numberClickable++
+                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold, color = MaterialTheme.colors.primary)) {
+                    append("#${splitWhitespace[0]}")
+                }
+                pop()
+                if (splitWhitespace.size > 1) { // Even so don't contain #hashtag
+                    withStyle(style = SpanStyle(color = MaterialTheme.colors.onSurface)) {
+                        append(" " + splitWhitespace.subList(1, splitWhitespace.size).joinToString(" "))
+                    }
+                }
+            } else {
+                withStyle(style = SpanStyle(color = MaterialTheme.colors.onSurface)) {
+                    append(split)
+                }
+            }
+        }
+    }
+
+    ClickableText(
+        textAnnotated,
+        onClick = { offset ->
+            for (i in 0..numberClickable) {
+                textAnnotated.getStringAnnotations(
+                    tag = "$i",
+                    start = offset,
+                    end = offset
+                ).firstOrNull()?.let { annotation ->
+                    Log.d("Clicked", annotation.item)
+                }
+            }
+        }
     )
     val image = cri.image
     if (image != null) {
@@ -207,7 +251,7 @@ private fun CriButtons(cri: Cri) {
 @Composable
 fun MainPreview() {
     CrierSocialTheme {
-        CriItem(getRandomCri())
+        CriComponent(getRandomCri())
     }
 }
 
@@ -215,6 +259,6 @@ fun MainPreview() {
 @Composable
 fun MainPreviewDark() {
     CrierSocialTheme(true) {
-        CriItem(getRandomCri())
+        CriComponent(getRandomCri())
     }
 }
