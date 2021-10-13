@@ -6,7 +6,6 @@ import com.cold0.crier.social.model.Cri
 import com.cold0.crier.social.model.ImageHolder
 import com.cold0.crier.social.model.User
 import java.util.*
-import kotlin.random.Random
 import kotlin.random.Random.Default.nextBoolean
 import kotlin.random.Random.Default.nextFloat
 import kotlin.random.Random.Default.nextInt
@@ -29,7 +28,7 @@ object DummyData {
             "Pellentesque semper at #eros convallis lobortis. Etiam quam mi, #eleifend eget finibus eu, auctor vel metus. Aliquam leo enim, vulputate in justo at, condimentum viverra velit. Aenean ex turpis, laoreet ac mi ut, consectetur facilisis ligula. Morbi a maximus lorem. Curabitur vitae enim ullamcorper, fringilla tellus eu, tristique libero. Sed lectus mauris, pulvinar vitae interdum quis, bibendum ut urna. Donec dolor turpis, consequat eget tortor elementum, elementum blandit risus. Morbi blandit dolor vel lectus eleifend, ut auctor massa vehicula. Morbi aliquam arcu augue, sed mollis enim feugiat id. Aliquam vitae felis at elit laoreet cursus sit amet id nunc. Nam eget ex id magna elementum ultricies. Praesent tempus purus a lectus aliquam ultrices. Maecenas id felis fermentum, vestibulum sem eget, vulputate ipsum.",
             "Cras sit #amet elementum neque. Nunc condimentum ex elit, ac #posuere nulla pellentesque non. Suspendisse id aliquet eros. Praesent efficitur vulputate ullamcorper. Proin ultrices nibh felis, ut iaculis elit dignissim quis. Phasellus lobortis enim ornare, vulputate elit vel, pretium lorem. Donec leo erat, bibendum non tellus nec, ornare ultricies massa. Aenean elementum neque sit amet ornare bibendum. Donec ultrices nibh risus, dictum scelerisque lectus vestibulum et. Aliquam sem risus, semper eget facilisis nec, sollicitudin quis nisi. Etiam vel tincidunt ipsum. Curabitur eu dui eleifend, luctus ipsum lobortis, euismod leo. Vivamus porta luctus tortor in efficitur. Phasellus pulvinar tincidunt quam, vitae imperdiet magna aliquam at. Nulla ut mattis odio.",
             "Donec id #magna massa. Nullam malesuada, massa eget lobortis viverra, quam mi ullamcorper nisi, consectetur commodo dolor ante ut odio. Donec pulvinar eget metus vel sodales. Nunc non sem sit amet sapien ornare facilisis. Nam tellus diam, ornare nec turpis dictum, convallis malesuada elit. In sagittis tellus convallis, euismod enim at, efficitur enim. Curabitur ornare condimentum ligula, a tempus tellus consectetur at. Nunc nec felis at tellus imperdiet consequat id ut nisl. Proin blandit odio vel laoreet ultricies. Proin non pretium elit."
-        ).random().substring(0, Random.nextInt(20, 250))
+        ).random().substring(0, nextInt(20, 250))
     }
 
     fun getUserFromUID(uid: UUID): User {
@@ -53,6 +52,8 @@ object DummyData {
 
     fun getRandomCri(): Cri {
         val hasImage = nextBoolean()
+        val imageWidth = nextInt(600, 1921)
+        val imageHeight = nextInt(400, 1081)
         return Cri(
             getRandomUser().uid,
             randomLoremIpsum(),
@@ -62,13 +63,18 @@ object DummyData {
             commentsCount = nextInt(0, 10),
             liked = nextBoolean(),
             rebloged = nextBoolean(),
-            image = if (hasImage) ImageHolder(getRandomColor(), "https://picsum.photos/seed/${nextInt(0, 999)}/1920/1080") else null
+            image = if (hasImage) ImageHolder(
+                width = imageWidth,
+                height = imageHeight,
+                getRandomColor(),
+                "https://picsum.photos/seed/${nextInt(0, 999)}/$imageWidth/$imageHeight"
+            ) else null
         )
     }
 
     fun getCriList(): List<Cri> {
         val list = mutableListOf<Cri>()
-        repeat(40)
+        repeat(500)
         {
             list.add(getRandomCri())
         }
