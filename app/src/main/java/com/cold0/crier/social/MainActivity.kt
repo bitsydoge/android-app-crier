@@ -23,6 +23,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.cold0.crier.social.component.CriComponent
 import com.cold0.crier.social.data.DummyData.getCriList
 import com.cold0.crier.social.navigation.BottomBar
 import com.cold0.crier.social.navigation.Drawer
@@ -59,8 +60,6 @@ fun MainView() {
                 onNavIconPressed = { scope.launch { if (state.drawerState.isClosed) state.drawerState.open() else state.drawerState.close() } },
                 onActionIconPressed = {})
         },
-        bottomBar = {
-            BottomBar(navController)
         },
         drawerContent = { Drawer() },
         drawerScrimColor = Color.Black.copy(alpha = 0.5f),
@@ -99,7 +98,7 @@ fun HomeScreen() {
     Box() {
         LazyColumn(state = lazyListState) {
             items(getCriList()) { cri ->
-                CriItem(cri)
+                CriComponent(cri)
                 Divider()
             }
         }
