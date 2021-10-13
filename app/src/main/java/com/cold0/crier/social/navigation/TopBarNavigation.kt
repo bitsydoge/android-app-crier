@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import com.cold0.crier.social.data.DummyData
-import com.cold0.crier.social.theme.CrierTheme
+import com.cold0.crier.social.theme.CrierSocialTheme
 import java.io.File
 
 @Composable
@@ -99,7 +99,7 @@ fun TopBar(
 @Preview
 @Composable
 fun TopBarPreview() {
-    CrierTheme(darkTheme = false) {
+    CrierSocialTheme(darkTheme = false) {
         TopBar()
     }
 }
@@ -107,7 +107,7 @@ fun TopBarPreview() {
 @Preview
 @Composable
 fun TopBarPreviewDark() {
-    CrierTheme(darkTheme = true) {
+    CrierSocialTheme(darkTheme = true) {
         TopBar()
     }
 }

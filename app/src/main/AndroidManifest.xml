@@ -11,12 +11,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Social.Crier">
+        android:theme="@style/Theme.Crier.Social">
         <activity
             android:name="com.cold0.crier.social.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.Social.Crier.NoActionBar">
+            android:theme="@style/Theme.Crier.Social.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

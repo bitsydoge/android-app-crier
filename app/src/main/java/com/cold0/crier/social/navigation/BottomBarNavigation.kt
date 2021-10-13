@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.cold0.crier.social.theme.CrierTheme
+import com.cold0.crier.social.theme.CrierSocialTheme
 
 @Composable
 fun BottomBar(navController: NavController) {
@@ -52,7 +52,7 @@ fun BottomBar(navController: NavController) {
 @Preview(showBackground = true)
 @Composable
 fun BottomNavigationBarPreview() {
-    CrierTheme(darkTheme = false) {
+    CrierSocialTheme(darkTheme = false) {
         BottomBar(rememberNavController())
     }
 }
@@ -60,7 +60,7 @@ fun BottomNavigationBarPreview() {
 @Preview(showBackground = true)
 @Composable
 fun BottomNavigationBarPreviewDark() {
-    CrierTheme(darkTheme = true) {
+    CrierSocialTheme(darkTheme = true) {
         BottomBar(rememberNavController())
     }
 }

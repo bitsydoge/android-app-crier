@@ -31,7 +31,7 @@ import coil.compose.rememberImagePainter
 import com.cold0.crier.social.data.DummyData.getRandomCri
 import com.cold0.crier.social.model.Cri
 import com.cold0.crier.social.theme.ColorUtils.grayed
-import com.cold0.crier.social.theme.CrierTheme
+import com.cold0.crier.social.theme.CrierSocialTheme
 import java.io.File
 
 @Composable
@@ -206,7 +206,7 @@ private fun CriButtons(cri: Cri) {
 @Preview(showBackground = true)
 @Composable
 fun MainPreview() {
-    CrierTheme {
+    CrierSocialTheme {
         CriItem(getRandomCri())
     }
 }
@@ -214,7 +214,7 @@ fun MainPreview() {
 @Preview(showBackground = true)
 @Composable
 fun MainPreviewDark() {
-    CrierTheme(true) {
+    CrierSocialTheme(true) {
         CriItem(getRandomCri())
     }
 }

@@ -28,14 +28,14 @@ import com.cold0.crier.social.navigation.BottomBar
 import com.cold0.crier.social.navigation.Drawer
 import com.cold0.crier.social.navigation.NavigationItem
 import com.cold0.crier.social.navigation.TopBar
-import com.cold0.crier.social.theme.CrierTheme
+import com.cold0.crier.social.theme.CrierSocialTheme
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            CrierTheme {
+            CrierSocialTheme {
                 MainView()
             }
         }
@@ -136,7 +136,7 @@ fun MessageScreen() {
 @Preview()
 @Composable
 fun HomeScreenPreview() {
-    CrierTheme {
+    CrierSocialTheme {
         Surface() {
             HomeScreen()
         }
@@ -146,7 +146,7 @@ fun HomeScreenPreview() {
 @Preview()
 @Composable
 fun HomeScreenPreviewDark() {
-    CrierTheme(true) {
+    CrierSocialTheme(true) {
         Surface() {
             HomeScreen()
         }

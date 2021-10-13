@@ -26,7 +26,7 @@ import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import com.cold0.crier.social.data.DummyData
 import com.cold0.crier.social.theme.ColorUtils.grayed
-import com.cold0.crier.social.theme.CrierTheme
+import com.cold0.crier.social.theme.CrierSocialTheme
 import java.io.File
 
 @Composable
@@ -149,7 +149,7 @@ fun UserPanel() {
 @Preview
 @Composable
 fun DrawerPreview() {
-    CrierTheme(darkTheme = false) {
+    CrierSocialTheme(darkTheme = false) {
         Drawer()
     }
 }
@@ -157,7 +157,7 @@ fun DrawerPreview() {
 @Preview
 @Composable
 fun DrawerPreviewDark() {
-    CrierTheme(darkTheme = true) {
+    CrierSocialTheme(darkTheme = true) {
         Drawer()
     }
 }
