@@ -5,5 +5,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "CrierNetwork"
+rootProject.name = "crier.social"
 include ':app'
