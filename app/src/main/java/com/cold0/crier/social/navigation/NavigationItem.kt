@@ -12,4 +12,5 @@ sealed class NavigationItem(var route: String, var icon: ImageVector, var title:
     object Search : NavigationItem("search", Icons.Filled.Search, "Search")
     object Notification : NavigationItem("notification", Icons.Filled.Notifications, "Notification")
     object Message : NavigationItem("message", Icons.Filled.Message, "Message")
+    object Profile : NavigationItem("profile", Icons.Filled.Message, "Profile")
 }

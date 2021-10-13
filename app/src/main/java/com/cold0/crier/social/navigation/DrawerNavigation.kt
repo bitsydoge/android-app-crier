@@ -10,7 +10,7 @@ import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.ListAlt
 import androidx.compose.material.icons.outlined.MapsUgc
 import androidx.compose.material.icons.outlined.Person
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
+import com.cold0.crier.social.NotImplementedAlert
 import com.cold0.crier.social.data.DummyData
 import com.cold0.crier.social.theme.ColorUtils.grayed
 import com.cold0.crier.social.theme.CrierSocialTheme
@@ -37,6 +38,10 @@ fun Drawer() {
             .padding(vertical = 8.dp)
     )
     {
+        var notImplementedAlertShow by remember { mutableStateOf(false) }
+        if (notImplementedAlertShow) {
+            NotImplementedAlert { notImplementedAlertShow = false }
+        }
         UserPanel()
         Divider()
         Spacer(modifier = Modifier.height(8.dp))
@@ -45,26 +50,42 @@ fun Drawer() {
         Spacer(modifier = Modifier.height(8.dp))
         Divider()
         Spacer(modifier = Modifier.height(24.dp))
-        Text(modifier = Modifier.padding(horizontal = 16.dp), text = "Parameters and confidentiality", fontSize = MaterialTheme.typography.body1.fontSize * 1.1)
+        Text(
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .clickable(onClick = {
+                    notImplementedAlertShow = true
+                }), text = "Parameters and confidentiality", fontSize = MaterialTheme.typography.body1.fontSize * 1.1
+        )
         Spacer(modifier = Modifier.height(24.dp))
-        Text(modifier = Modifier.padding(horizontal = 16.dp), text = "Information and Licences", fontSize = MaterialTheme.typography.body1.fontSize * 1.1)
+        Text(
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .clickable(onClick = {
+                    notImplementedAlertShow = true
+                }), text = "Information and Licences", fontSize = MaterialTheme.typography.body1.fontSize * 1.1
+        )
     }
 }
 
 @Composable
 fun MenuPanel() {
+    var notImplementedAlertShow by remember { mutableStateOf(false) }
+    if (notImplementedAlertShow) {
+        NotImplementedAlert { notImplementedAlertShow = false }
+    }
     Column(Modifier.padding(horizontal = 16.dp)) {
-        MenuItem(Icons.Outlined.Person, "Profil") {
-
+        MenuItem(Icons.Outlined.Person, "Profile") {
+            notImplementedAlertShow = true
         }
         MenuItem(Icons.Outlined.ListAlt, "Lists") {
-
+            notImplementedAlertShow = true
         }
         MenuItem(Icons.Outlined.MapsUgc, "Subjects") {
-
+            notImplementedAlertShow = true
         }
         MenuItem(Icons.Outlined.BookmarkBorder, "Bookmarks") {
-
+            notImplementedAlertShow = true
         }
     }
 }
@@ -121,7 +142,6 @@ fun UserPanel() {
             ProvideTextStyle(value = MaterialTheme.typography.body1.copy(fontSize = MaterialTheme.typography.body1.fontSize * 0.9)) {
                 Text(
                     buildAnnotatedString {
-
                         withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
                             append(user.following.toString())
                         }

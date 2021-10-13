@@ -2,6 +2,7 @@ package com.cold0.crier.social
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -23,12 +24,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.cold0.crier.social.component.CriComponent
 import com.cold0.crier.social.data.DummyData.getCriList
 import com.cold0.crier.social.navigation.BottomBar
 import com.cold0.crier.social.navigation.Drawer
 import com.cold0.crier.social.navigation.NavigationItem
 import com.cold0.crier.social.navigation.TopBar
+import com.cold0.crier.social.screens.CriComponent
 import com.cold0.crier.social.theme.CrierSocialTheme
 import kotlinx.coroutines.launch
 
@@ -46,17 +47,17 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainView() {
     val navController = rememberNavController()
-    val state = rememberScaffoldState()
+    val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope() // For open() and close() of the drawer
     var notImplementedAlertShow by remember { mutableStateOf(false) }
     if (notImplementedAlertShow) {
         NotImplementedAlert { notImplementedAlertShow = false }
     }
     Scaffold(
-        scaffoldState = state,
+        scaffoldState = scaffoldState,
         topBar = {
             TopBar(
-                onNavIconPressed = { scope.launch { if (state.drawerState.isClosed) state.drawerState.open() else state.drawerState.close() } },
+                onNavIconPressed = { scope.launch { if (scaffoldState.drawerState.isClosed) scaffoldState.drawerState.open() else scaffoldState.drawerState.close() } },
                 onActionIconPressed = { notImplementedAlertShow = true }
             )
         },
@@ -79,6 +80,15 @@ fun MainView() {
             BottomBar(navController)
         }
     ) { paddingValues: PaddingValues ->
+
+        if (scaffoldState.drawerState.isOpen) {
+            BackHandler() {
+                scope.launch {
+                    scaffoldState.drawerState.close()
+                }
+            }
+        }
+
         Surface() {
             NavHost(navController, startDestination = NavigationItem.Home.route) {
                 composable(NavigationItem.Home.route) {
