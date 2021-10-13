@@ -58,8 +58,8 @@ fun MainView() {
         topBar = {
             TopBar(
                 onNavIconPressed = { scope.launch { if (state.drawerState.isClosed) state.drawerState.open() else state.drawerState.close() } },
-                onActionIconPressed = {})
-        },
+                onActionIconPressed = {}
+            )
         },
         drawerContent = { Drawer() },
         drawerScrimColor = Color.Black.copy(alpha = 0.5f),
@@ -71,6 +71,9 @@ fun MainView() {
                 FloatingActionButton(onClick = {}, backgroundColor = MaterialTheme.colors.primary, contentColor = MaterialTheme.colors.onPrimary) {
                     Icon(Icons.Filled.Add, "")
                 }
+        },
+        bottomBar = {
+            BottomBar(navController)
         }
     ) {
         Surface() {
