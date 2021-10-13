@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Icon
@@ -17,7 +18,7 @@ import androidx.compose.material.icons.filled.VerifiedUser
 import androidx.compose.material.icons.outlined.Comment
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Share
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
+import com.cold0.crier.social.NotImplementedAlert
 import com.cold0.crier.social.R
 import com.cold0.crier.social.data.DummyData.getRandomCri
 import com.cold0.crier.social.model.Cri
@@ -61,23 +63,24 @@ fun CriComponent(cri: Cri) {
 @Composable
 private fun CriUserAvatar(cri: Cri) {
     val user = cri.getUser()
-    Box(Modifier.clickable {
-
-    }) {
-        Image(
-            painter = rememberImagePainter(
-                data = if (user.avatar.local != null) File(user.avatar.local.toString()) else user.avatar.online,
-                builder = {
-                    crossfade(true)
-                }
-            ),
-            "",
-            modifier = Modifier
-                .size(50.dp)
-                .clip(shape = RoundedCornerShape(25.dp)),
-            contentScale = ContentScale.Crop
-        )
+    var notImplementedAlertShow by remember { mutableStateOf(false) }
+    if (notImplementedAlertShow) {
+        NotImplementedAlert { notImplementedAlertShow = false }
     }
+    Image(
+        painter = rememberImagePainter(
+            data = if (user.avatar.local != null) File(user.avatar.local.toString()) else user.avatar.online,
+            builder = {
+                crossfade(true)
+            }
+        ),
+        "",
+        modifier = Modifier
+            .size(50.dp)
+            .clip(shape = CircleShape)
+            .clickable(onClick = { notImplementedAlertShow = true }),
+        contentScale = ContentScale.Crop
+    )
 }
 
 @Composable
@@ -162,7 +165,7 @@ private fun CriContent(cri: Cri) {
                 .fillMaxWidth()
                 .height(450.dp)
                 .clip(shape = RoundedCornerShape(16.dp))
-                .background(image.colorPlaceHolder),
+                .background(image.colorAverage),
             contentScale = ContentScale.Crop
         )
     }
@@ -170,6 +173,10 @@ private fun CriContent(cri: Cri) {
 
 @Composable
 private fun CriButtons(cri: Cri) {
+    var notImplementedAlertShow by remember { mutableStateOf(false) }
+    if (notImplementedAlertShow) {
+        NotImplementedAlert { notImplementedAlertShow = false }
+    }
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -179,7 +186,7 @@ private fun CriButtons(cri: Cri) {
     ) {
         Row {
             IconButton(
-                onClick = { },
+                onClick = { notImplementedAlertShow = true },
             ) {
                 Icon(
                     Icons.Outlined.Comment,
@@ -196,7 +203,7 @@ private fun CriButtons(cri: Cri) {
         }
         Row {
             IconButton(
-                onClick = { },
+                onClick = { notImplementedAlertShow = true },
             ) {
                 Icon(
                     painterResource(R.drawable.ic_reblog),
@@ -215,7 +222,7 @@ private fun CriButtons(cri: Cri) {
         }
         Row {
             IconButton(
-                onClick = { },
+                onClick = { notImplementedAlertShow = true },
             ) {
                 Icon(
                     if (cri.liked) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
@@ -233,7 +240,7 @@ private fun CriButtons(cri: Cri) {
         }
         Row {
             IconButton(
-                onClick = { },
+                onClick = { notImplementedAlertShow = true },
             ) {
                 Icon(
                     Icons.Outlined.Share,

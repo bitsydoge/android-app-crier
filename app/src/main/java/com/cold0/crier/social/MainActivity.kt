@@ -4,16 +4,16 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,11 +41,6 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-
-    }
 }
 
 @Composable
@@ -53,12 +48,16 @@ fun MainView() {
     val navController = rememberNavController()
     val state = rememberScaffoldState()
     val scope = rememberCoroutineScope() // For open() and close() of the drawer
+    var notImplementedAlertShow by remember { mutableStateOf(false) }
+    if (notImplementedAlertShow) {
+        NotImplementedAlert { notImplementedAlertShow = false }
+    }
     Scaffold(
         scaffoldState = state,
         topBar = {
             TopBar(
                 onNavIconPressed = { scope.launch { if (state.drawerState.isClosed) state.drawerState.open() else state.drawerState.close() } },
-                onActionIconPressed = {}
+                onActionIconPressed = { notImplementedAlertShow = true }
             )
         },
         drawerContent = { Drawer() },
@@ -68,18 +67,22 @@ fun MainView() {
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentRoute = navBackStackEntry?.destination?.route
             if (currentRoute == NavigationItem.Home.route)
-                FloatingActionButton(onClick = {}, backgroundColor = MaterialTheme.colors.primary, contentColor = MaterialTheme.colors.onPrimary) {
+                FloatingActionButton(
+                    onClick = { notImplementedAlertShow = true },
+                    backgroundColor = MaterialTheme.colors.primary,
+                    contentColor = MaterialTheme.colors.onPrimary
+                ) {
                     Icon(Icons.Filled.Add, "")
                 }
         },
         bottomBar = {
             BottomBar(navController)
         }
-    ) {
+    ) { paddingValues: PaddingValues ->
         Surface() {
             NavHost(navController, startDestination = NavigationItem.Home.route) {
                 composable(NavigationItem.Home.route) {
-                    HomeScreen()
+                    HomeScreen(padding = paddingValues)
                 }
                 composable(NavigationItem.Search.route) {
                     SearchScreen()
@@ -96,9 +99,13 @@ fun MainView() {
 }
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(padding: PaddingValues = PaddingValues()) {
     val lazyListState = rememberLazyListState()
-    Box() {
+    Box(
+        Modifier
+            .fillMaxSize()
+            .padding(padding)
+    ) {
         LazyColumn(state = lazyListState) {
             items(getCriList()) { cri ->
                 CriComponent(cri)
