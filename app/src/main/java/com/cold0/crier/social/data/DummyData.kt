@@ -2,8 +2,8 @@ package com.cold0.crier.social.data
 
 import androidx.compose.ui.graphics.Color
 import androidx.core.graphics.ColorUtils.HSLToColor
-import com.cold0.crier.social.model.Cri
 import com.cold0.crier.social.model.ImageHolder
+import com.cold0.crier.social.model.Post
 import com.cold0.crier.social.model.User
 import java.util.*
 import kotlin.random.Random.Default.nextBoolean
@@ -12,16 +12,72 @@ import kotlin.random.Random.Default.nextInt
 
 object DummyData {
     private val userList = listOf(
-        User(UUID.randomUUID(), "B.O.B.Y", "Boby5413", verified = nextBoolean(), follower = nextInt(0, 50000), following = nextInt(0, 500000)),
-        User(UUID.randomUUID(), "Jim", "Jimmy134", verified = nextBoolean(), follower = nextInt(0, 50000), following = nextInt(0, 500000)),
-        User(UUID.randomUUID(), "幽波紋 DAM", "Jojo____Fan", verified = nextBoolean(), follower = nextInt(0, 50000), following = nextInt(0, 500000)),
-        User(UUID.randomUUID(), "ElFilo", "Filo_552", verified = nextBoolean(), follower = nextInt(0, 50000), following = nextInt(0, 500000)),
-        User(UUID.randomUUID(), "Mula COMMISSION OPEN", "Mula123500", verified = nextBoolean(), follower = nextInt(0, 50000), following = nextInt(0, 500000)),
-        User(UUID.randomUUID(), "Nyto El Magnifico", "Nyto__123", verified = nextBoolean(), follower = nextInt(0, 500000), following = nextInt(0, 500000)),
-        User(UUID.randomUUID(), "13/02/1999 Never Forget", "ESO-AAA", verified = nextBoolean(), follower = nextInt(0, 50000), following = nextInt(0, 500000)),
+        User(
+            uid = UUID.randomUUID(),
+            name = "B.O.B.Y",
+            handle = "Boby5413",
+            verified = nextBoolean(),
+            follower = nextInt(0, 50000),
+            following = nextInt(0, 500000),
+            avatar = ImageHolder(400, 400, getRandomColor(), "https://i.pravatar.cc/400?img=${nextInt(0, 100)}")
+        ),
+        User(
+            uid = UUID.randomUUID(),
+            name = "Jim",
+            handle = "Jimmy134",
+            verified = nextBoolean(),
+            follower = nextInt(0, 50000),
+            following = nextInt(0, 500000),
+            avatar = ImageHolder(400, 400, getRandomColor(), "https://i.pravatar.cc/400?img=${nextInt(0, 100)}")
+        ),
+        User(
+            uid = UUID.randomUUID(),
+            name = "幽波紋 DAM",
+            handle = "Jojo____Fan",
+            verified = nextBoolean(),
+            follower = nextInt(0, 50000),
+            following = nextInt(0, 500000),
+            avatar = ImageHolder(400, 400, getRandomColor(), "https://i.pravatar.cc/400?img=${nextInt(0, 100)}")
+        ),
+        User(
+            uid = UUID.randomUUID(),
+            name = "ElFilo",
+            handle = "Filo_552",
+            verified = nextBoolean(),
+            follower = nextInt(0, 50000),
+            following = nextInt(0, 500000),
+            avatar = ImageHolder(400, 400, getRandomColor(), "https://i.pravatar.cc/400?img=${nextInt(0, 100)}")
+        ),
+        User(
+            uid = UUID.randomUUID(),
+            name = "Mula COMMISSION OPEN",
+            handle = "Mula123500",
+            verified = nextBoolean(),
+            follower = nextInt(0, 50000),
+            following = nextInt(0, 500000),
+            avatar = ImageHolder(400, 400, getRandomColor(), "https://i.pravatar.cc/400?img=${nextInt(0, 100)}")
+        ),
+        User(
+            uid = UUID.randomUUID(),
+            name = "Nyto El Magnifico",
+            handle = "Nyto__123",
+            verified = nextBoolean(),
+            follower = nextInt(0, 500000),
+            following = nextInt(0, 500000),
+            avatar = ImageHolder(400, 400, getRandomColor(), "https://i.pravatar.cc/400?img=${nextInt(0, 100)}")
+        ),
+        User(
+            uid = UUID.randomUUID(),
+            name = "13/02/1999 Never Forget",
+            handle = "ESO-AAA",
+            verified = nextBoolean(),
+            follower = nextInt(0, 50000),
+            following = nextInt(0, 500000),
+            avatar = ImageHolder(400, 400, getRandomColor(), "https://i.pravatar.cc/400?img=${nextInt(0, 100)}")
+        ),
     )
 
-    private fun randomLoremIpsum(): String {
+    private fun getRandomLoremIpsum(): String {
         return listOf(
             "Lorem#ipsum dolor sit amet, #consectetur adipiscing \uD83D\uDE00 elit. Praesent #pulvinar erat eget auctor ultricies. Vestibulum id purus iaculis, semper mauris id, mollis velit. Maecenas in tempor metus. Sed sed lectus tellus. Duis condimentum odio arcu, nec sodales nisl feugiat at. Nulla ut nisi eu lorem pulvinar efficitur. Nunc risus felis, fringilla et tempor is, convallis quis dolor. Mauris varius mattis imperdiet. Quisque ullamcorper erat ut dui tempus gravida. Maecenas laoreet et quam vel fringilla. Quisque sed libero varius, auctor augue non, viverra mi. Praesent cursus enim eu mauris suscipit ornare. In pulvinar nulla finibus ante ultrices, at rhoncus nulla tristique. Ut at sapien ac massa iaculis pharetra non quis metus. Morbi quis ullamcorper diam, sit amet blandit velit.",
             "Mauris#euismod rutrum mauris, vitae tincidunt ❤️ turpis fringilla vel. #Praesent vehicula urna sed ligula dignissim, vitae rhoncus augue imperdiet. Etiam ac sem justo. Quisque condimentum tincidunt urna, non bibendum nisl. Donec sollicitudin tortor eget nisl ultrices, non mattis tellus varius. Curabitur ultricies lorem et nibh venenatis laoreet. Etiam orci tellus, tincidunt et iaculis sit amet, scelerisque ut velit. Donec et malesuada lectus. Maecenas elit lectus, consequat ultricies dictum aliquet, rutrum a tortor. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin ornare ullamcorper volutpat. Vestibulum ligula augue, commodo ut condimentum nec, bibendum varius mauris.",
@@ -50,33 +106,40 @@ object DummyData {
         return Color(HSLToColor(floatArrayOf(hue, sat, value)))
     }
 
-    fun getRandomCri(): Cri {
-        val hasImage = nextBoolean()
-        val imageWidth = nextInt(600, 1921)
-        val imageHeight = nextInt(400, 1081)
-        return Cri(
+    fun getRandomPost(): Post {
+        val imageCount = nextInt(0, 5)
+        val imageList = mutableListOf<ImageHolder>()
+        repeat(imageCount)
+        {
+            val imageWidth = nextInt(600, 1921)
+            val imageHeight = nextInt(400, 1081)
+            val imageHolder = ImageHolder(
+                width = imageWidth,
+                height = imageHeight,
+                colorAverage = getRandomColor(),
+                online = "https://picsum.photos/seed/${nextInt(0, 200)}/$imageWidth/$imageHeight"
+            )
+            imageList.add(imageHolder)
+        }
+
+        return Post(
             getRandomUser().uid,
-            randomLoremIpsum(),
+            getRandomLoremIpsum(),
             timestamp = Date(),
             likeCount = nextInt(0, 10),
             reblogCount = nextInt(0, 10),
             commentsCount = nextInt(0, 10),
             liked = nextBoolean(),
             rebloged = nextBoolean(),
-            image = if (hasImage) ImageHolder(
-                width = imageWidth,
-                height = imageHeight,
-                getRandomColor(),
-                "https://picsum.photos/seed/${nextInt(0, 999)}/$imageWidth/$imageHeight"
-            ) else null
+            imageList = imageList
         )
     }
 
-    fun getCriList(): List<Cri> {
-        val list = mutableListOf<Cri>()
+    fun getCriList(): List<Post> {
+        val list = mutableListOf<Post>()
         repeat(500)
         {
-            list.add(getRandomCri())
+            list.add(getRandomPost())
         }
         return Collections.unmodifiableList(list)
     }

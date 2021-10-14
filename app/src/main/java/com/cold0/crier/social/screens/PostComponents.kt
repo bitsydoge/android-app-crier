@@ -37,14 +37,15 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.cold0.crier.social.NotImplementedAlert
 import com.cold0.crier.social.R
-import com.cold0.crier.social.data.DummyData.getRandomCri
-import com.cold0.crier.social.model.Cri
+import com.cold0.crier.social.data.DummyData.getRandomPost
+import com.cold0.crier.social.model.ImageHolder
+import com.cold0.crier.social.model.Post
 import com.cold0.crier.social.theme.ColorUtils.grayed
 import com.cold0.crier.social.theme.CrierSocialTheme
 import java.io.File
 
 @Composable
-fun CriComponent(cri: Cri) {
+fun CriComponent(cri: Post) {
     Row(
         modifier = Modifier
             .padding(all = 10.dp)
@@ -62,7 +63,7 @@ fun CriComponent(cri: Cri) {
 }
 
 @Composable
-private fun CriUserAvatar(cri: Cri) {
+private fun CriUserAvatar(cri: Post) {
     val user = cri.getUser()
     var notImplementedAlertShow by remember { mutableStateOf(false) }
     if (notImplementedAlertShow) {
@@ -85,7 +86,7 @@ private fun CriUserAvatar(cri: Cri) {
 }
 
 @Composable
-private fun CriUserInfo(cri: Cri) {
+private fun CriUserInfo(cri: Post) {
     val user = cri.getUser()
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text(
@@ -108,10 +109,10 @@ private fun CriUserInfo(cri: Cri) {
 }
 
 @Composable
-private fun CriContent(cri: Cri) {
+private fun CriContent(post: Post) {
     var numberClickable = 0
     val textAnnotated = buildAnnotatedString {
-        val splits = cri.content.split("#") // Split text with # so all odd index start with a #hashtag
+        val splits = post.content.split("#") // Split text with # so all odd index start with a #hashtag
         splits.forEachIndexed { i, split ->
             if (i % 2 == 1) {
                 val splitWhitespace = split.split("\\s+".toRegex()) // Split text with whitespace
@@ -151,12 +152,18 @@ private fun CriContent(cri: Cri) {
             }
         }
     )
-    val image = cri.image
-    if (image != null) {
+    if (post.imageList.isNotEmpty()) {
         Spacer(modifier = Modifier.height(8.dp))
+        ImageGridLayout(imageList = post.imageList)
+    }
+}
+
+@Composable
+private fun ImageGridLayout(imageList: List<ImageHolder>) {
+    for (image in imageList) {
         Image(
             painter = rememberImagePainter(
-                data = if (image.local != null) File(image.local.toString()) else image.online,
+                data = image.getDataForPainter(),
                 builder = {
                     crossfade(true)
                 }
@@ -173,7 +180,7 @@ private fun CriContent(cri: Cri) {
 }
 
 @Composable
-private fun CriButtons(cri: Cri) {
+private fun CriButtons(cri: Post) {
     var notImplementedAlertShow by remember { mutableStateOf(false) }
     if (notImplementedAlertShow) {
         NotImplementedAlert { notImplementedAlertShow = false }
@@ -259,7 +266,7 @@ private fun CriButtons(cri: Cri) {
 @Composable
 fun MainPreview() {
     CrierSocialTheme {
-        CriComponent(getRandomCri())
+        CriComponent(getRandomPost())
     }
 }
 
@@ -267,6 +274,6 @@ fun MainPreview() {
 @Composable
 fun MainPreviewDark() {
     CrierSocialTheme(true) {
-        CriComponent(getRandomCri())
+        CriComponent(getRandomPost())
     }
 }

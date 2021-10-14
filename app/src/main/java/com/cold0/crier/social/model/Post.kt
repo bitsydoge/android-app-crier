@@ -3,16 +3,16 @@ package com.cold0.crier.social.model
 import com.cold0.crier.social.data.DummyData.getUserFromUID
 import java.util.*
 
-data class Cri(
+data class Post(
     val userUID: UUID,
     val content: String,
     val timestamp: Date = Date(),
-    var likeCount: Int,
-    var reblogCount: Int,
-    var commentsCount: Int,
-    var liked: Boolean,
-    var rebloged: Boolean,
-    var image: ImageHolder?
+    val likeCount: Int,
+    val reblogCount: Int,
+    val commentsCount: Int,
+    val liked: Boolean,
+    val rebloged: Boolean,
+    val imageList: List<ImageHolder> = listOf()
 ) {
     private var user: User? = null
     fun getUser(): User {

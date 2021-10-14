@@ -1,4 +1,4 @@
-package com.cold0.crier.social.navigation
+package com.cold0.crier.social.screens.navigation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.*

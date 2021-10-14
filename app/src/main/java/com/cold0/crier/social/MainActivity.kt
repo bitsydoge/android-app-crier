@@ -4,32 +4,25 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment.Companion.Center
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.cold0.crier.social.data.DummyData.getCriList
-import com.cold0.crier.social.navigation.BottomBar
-import com.cold0.crier.social.navigation.Drawer
-import com.cold0.crier.social.navigation.NavigationItem
-import com.cold0.crier.social.navigation.TopBar
-import com.cold0.crier.social.screens.CriComponent
+import com.cold0.crier.social.screens.navigation.BottomBar
+import com.cold0.crier.social.screens.navigation.Drawer
+import com.cold0.crier.social.screens.navigation.NavigationItem
+import com.cold0.crier.social.screens.navigation.TopBar
+import com.cold0.crier.social.screens.HomeScreen
+import com.cold0.crier.social.screens.MessageScreen
+import com.cold0.crier.social.screens.NotificationScreen
+import com.cold0.crier.social.screens.SearchScreen
 import com.cold0.crier.social.theme.CrierSocialTheme
 import kotlinx.coroutines.launch
 
@@ -104,70 +97,6 @@ fun MainView() {
                     MessageScreen()
                 }
             }
-        }
-    }
-}
-
-@Composable
-fun HomeScreen(padding: PaddingValues = PaddingValues()) {
-    val lazyListState = rememberLazyListState()
-    Box(
-        Modifier
-            .fillMaxSize()
-            .padding(padding)
-    ) {
-        LazyColumn(state = lazyListState) {
-            items(getCriList()) { cri ->
-                CriComponent(cri)
-                Divider()
-            }
-        }
-    }
-}
-
-@Composable
-fun SearchScreen() {
-    Box(Modifier.fillMaxSize())
-    {
-        Text("Search Screen", Modifier.align(Center))
-    }
-}
-
-@Composable
-fun NotificationScreen() {
-    Box(Modifier.fillMaxSize())
-    {
-        Text("Notification Screen", Modifier.align(Center))
-    }
-}
-
-@Composable
-fun MessageScreen() {
-    Box(Modifier.fillMaxSize())
-    {
-        Text("Message Screen", Modifier.align(Center))
-    }
-}
-
-// ---------------------------------------------------------------
-// COMPOSE PREVIEW
-// ---------------------------------------------------------------
-@Preview()
-@Composable
-fun HomeScreenPreview() {
-    CrierSocialTheme {
-        Surface() {
-            HomeScreen()
-        }
-    }
-}
-
-@Preview()
-@Composable
-fun HomeScreenPreviewDark() {
-    CrierSocialTheme(true) {
-        Surface() {
-            HomeScreen()
         }
     }
 }

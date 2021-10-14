@@ -1,4 +1,4 @@
-package com.cold0.crier.social.navigation
+package com.cold0.crier.social.screens.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home

@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">Crier</string>
     <string name="back">Back</string>
+    <string-array name="hello">
+        <item>Hello</item>
+        <item>Hello</item>
+        <item>Hello</item>
+        <item>Hello</item>
+        <item>Hello</item>
+
+    </string-array>
 </resources>
