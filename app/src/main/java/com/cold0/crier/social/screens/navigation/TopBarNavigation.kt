@@ -16,7 +16,6 @@ import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import com.cold0.crier.social.data.DummyData
 import com.cold0.crier.social.theme.CrierSocialTheme
-import java.io.File
 
 @Composable
 fun TopBar(
@@ -50,7 +49,7 @@ fun TopBar(
                     ) {
                         Image(
                             painter = rememberImagePainter(
-                                data = if (user.avatar.local != null) File(user.avatar.local.toString()) else user.avatar.online,
+                                data = user.avatar.getDataForPainter(),
                                 builder = {
                                     crossfade(true)
                                     transformations(CircleCropTransformation())

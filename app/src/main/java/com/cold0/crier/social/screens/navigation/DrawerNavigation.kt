@@ -28,7 +28,6 @@ import com.cold0.crier.social.NotImplementedAlert
 import com.cold0.crier.social.data.DummyData
 import com.cold0.crier.social.theme.ColorUtils.grayed
 import com.cold0.crier.social.theme.CrierSocialTheme
-import java.io.File
 
 @Composable
 fun Drawer() {
@@ -113,7 +112,7 @@ fun UserPanel() {
     Column(Modifier.padding(horizontal = 16.dp)) {
         Image(
             painter = rememberImagePainter(
-                data = if (user.avatar.local != null) File(user.avatar.local.toString()) else user.avatar.online,
+                data = user.avatar.getDataForPainter(),
                 builder = {
                     crossfade(true)
                     transformations(CircleCropTransformation())
