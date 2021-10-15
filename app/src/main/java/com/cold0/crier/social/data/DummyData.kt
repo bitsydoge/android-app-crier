@@ -77,6 +77,10 @@ object DummyData {
         ),
     )
 
+    private fun getRandomUser(): User = userList.random()
+
+    fun getCurrentUser(): User = userList.first()
+
     private fun getRandomLoremIpsum(): String {
         return listOf(
             "Lorem#ipsum dolor sit amet, #consectetur adipiscing \uD83D\uDE00 elit. Praesent #pulvinar erat eget auctor ultricies. Vestibulum id purus iaculis, semper mauris id, mollis velit. Maecenas in tempor metus. Sed sed lectus tellus. Duis condimentum odio arcu, nec sodales nisl feugiat at. Nulla ut nisi eu lorem pulvinar efficitur. Nunc risus felis, fringilla et tempor is, convallis quis dolor. Mauris varius mattis imperdiet. Quisque ullamcorper erat ut dui tempus gravida. Maecenas laoreet et quam vel fringilla. Quisque sed libero varius, auctor augue non, viverra mi. Praesent cursus enim eu mauris suscipit ornare. In pulvinar nulla finibus ante ultrices, at rhoncus nulla tristique. Ut at sapien ac massa iaculis pharetra non quis metus. Morbi quis ullamcorper diam, sit amet blandit velit.",
@@ -95,10 +99,6 @@ object DummyData {
         )
     }
 
-    private fun getRandomUser(): User = userList.random()
-
-    fun getCurrentUser(): User = userList.first()
-
     private fun getRandomColor(): Color {
         val hue = nextFloat() * 360
         val sat = nextFloat() * (.6f - .2f) + .2f
@@ -106,20 +106,21 @@ object DummyData {
         return Color(HSLToColor(floatArrayOf(hue, sat, value)))
     }
 
+    private fun getRandomImage(): ImageHolder {
+        val imageWidth = nextInt(600, 1921)
+        val imageHeight = nextInt(400, 1081)
+        return ImageHolder(
+            width = imageWidth,
+            height = imageHeight,
+            colorAverage = getRandomColor(),
+            online = "https://picsum.photos/seed/${nextInt(0, 200)}/$imageWidth/$imageHeight"
+        )
+    }
+
     fun getRandomPost(): Post {
-        val imageCount = nextInt(0, 5)
         val imageList = mutableListOf<ImageHolder>()
-        repeat(imageCount)
-        {
-            val imageWidth = nextInt(600, 1921)
-            val imageHeight = nextInt(400, 1081)
-            val imageHolder = ImageHolder(
-                width = imageWidth,
-                height = imageHeight,
-                colorAverage = getRandomColor(),
-                online = "https://picsum.photos/seed/${nextInt(0, 200)}/$imageWidth/$imageHeight"
-            )
-            imageList.add(imageHolder)
+        repeat(nextInt(0, 10)) {
+            imageList.add(getRandomImage())
         }
 
         return Post(

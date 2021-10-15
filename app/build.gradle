@@ -32,6 +32,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
         useIR = true
+        freeCompilerArgs += "-Xopt-in=com.google.accompanist.pager.ExperimentalPagerApi"
     }
     buildFeatures {
         compose true
@@ -71,6 +72,10 @@ dependencies {
     // Coil Image Loader
     implementation "io.coil-kt:coil-compose:1.4.0"
     implementation "io.coil-kt:coil-gif:1.4.0"
+
+    // Pager
+    implementation "com.google.accompanist:accompanist-pager:0.19.0"
+    implementation "com.google.accompanist:accompanist-pager-indicators:0.19.0"
 
     // -------------------------------
     // Debug Only
