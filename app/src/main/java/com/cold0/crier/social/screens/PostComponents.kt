@@ -48,7 +48,6 @@ import com.cold0.crier.social.theme.CrierSocialTheme
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
-import java.io.File
 
 @Composable
 fun CriComponent(cri: Post) {
@@ -77,7 +76,7 @@ private fun CriUserAvatar(cri: Post) {
     }
     Image(
         painter = rememberImagePainter(
-            data = if (user.avatar.local != null) File(user.avatar.local.toString()) else user.avatar.online,
+            data = user.avatar.getDataForPainter(),
             builder = {
                 crossfade(true)
             }
