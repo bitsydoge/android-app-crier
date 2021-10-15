@@ -22,6 +22,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -34,6 +35,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.cold0.crier.social.NotImplementedAlert
 import com.cold0.crier.social.R
@@ -160,22 +162,176 @@ private fun CriContent(post: Post) {
 
 @Composable
 private fun ImageGridLayout(imageList: List<ImageHolder>) {
+    val painterList = mutableListOf<ImagePainter>()
+
     for (image in imageList) {
+        painterList.add(rememberImagePainter(
+            data = image.getDataForPainter(),
+            builder = {
+                crossfade(true)
+            }
+        ))
+    }
+
+    Box(Modifier.clip(shape = RoundedCornerShape(16.dp))) {
+        when (imageList.size) {
+            1 -> {
+                ImageGridLayout1(image = imageList[0], painter = painterList[0])
+            }
+            2 -> {
+                ImageGridLayout2(imageList = imageList, painterList = painterList)
+            }
+            3 -> {
+                ImageGridLayout3(imageList = imageList, painterList = painterList)
+            }
+            4 -> {
+                ImageGridLayout4(imageList = imageList, painterList = painterList)
+            }
+        }
+    }
+}
+
+@Composable
+private fun ImageGridLayout1(image: ImageHolder, painter: Painter) {
+    Image(
+        painter = painter,
+        "",
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(image.width / image.height.toFloat())
+            .background(image.colorAverage),
+        contentScale = ContentScale.Crop
+    )
+}
+
+@Composable
+private fun ImageGridLayout2(imageList: List<ImageHolder>, painterList: List<Painter>) {
+    Row(horizontalArrangement = Arrangement.Center) {
         Image(
-            painter = rememberImagePainter(
-                data = image.getDataForPainter(),
-                builder = {
-                    crossfade(true)
-                }
-            ),
+            painter = painterList[0],
             "",
             modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(image.width / image.height.toFloat())
-                .clip(shape = RoundedCornerShape(16.dp))
-                .background(image.colorAverage),
+                .fillMaxWidth(0.5f)
+                .height(200.dp)
+                .padding(end = 2.dp)
+                .background(imageList[0].colorAverage),
             contentScale = ContentScale.Crop
         )
+        Image(
+            painter = painterList[1],
+            "",
+            modifier = Modifier
+                .fillMaxWidth(1.0f)
+                .height(200.dp)
+                .padding(start = 2.dp)
+                .background(imageList[1].colorAverage),
+            contentScale = ContentScale.Crop
+        )
+    }
+}
+
+@Composable
+private fun ImageGridLayout3(imageList: List<ImageHolder>, painterList: List<Painter>) {
+    Row(horizontalArrangement = Arrangement.Center) {
+        Image(
+            painter = painterList[0],
+            "",
+            modifier = Modifier
+                .fillMaxWidth(0.5f)
+                .height(200.dp)
+                .padding(end = 2.dp)
+                .background(imageList[0].colorAverage),
+            contentScale = ContentScale.Crop
+        )
+        Column(
+            modifier = Modifier
+                .fillMaxWidth(1.0f)
+                .height(200.dp)
+                .padding(start = 2.dp)
+        ) {
+            Image(
+                painter = painterList[1],
+                "",
+                modifier = Modifier
+                    .fillMaxWidth(1.0f)
+                    .fillMaxHeight(0.5f)
+                    .padding(bottom = 2.dp)
+                    .background(imageList[1].colorAverage),
+                contentScale = ContentScale.Crop
+            )
+            Image(
+                painter = painterList[2],
+                "",
+                modifier = Modifier
+                    .fillMaxWidth(1.0f)
+                    .fillMaxHeight(1.0f)
+                    .padding(top = 2.dp)
+                    .background(imageList[2].colorAverage),
+                contentScale = ContentScale.Crop
+            )
+        }
+
+    }
+}
+
+@Composable
+private fun ImageGridLayout4(imageList: List<ImageHolder>, painterList: List<Painter>) {
+    Row(horizontalArrangement = Arrangement.Center) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth(0.5f)
+                .height(200.dp)
+                .padding(end = 2.dp)
+        ) {
+            Image(
+                painter = painterList[0],
+                "",
+                modifier = Modifier
+                    .fillMaxWidth(1.0f)
+                    .fillMaxHeight(0.5f)
+                    .padding(bottom = 2.dp)
+                    .background(imageList[1].colorAverage),
+                contentScale = ContentScale.Crop
+            )
+            Image(
+                painter = painterList[1],
+                "",
+                modifier = Modifier
+                    .fillMaxWidth(1.0f)
+                    .fillMaxHeight(1.0f)
+                    .padding(top = 2.dp)
+                    .background(imageList[2].colorAverage),
+                contentScale = ContentScale.Crop
+            )
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxWidth(1.0f)
+                .height(200.dp)
+                .padding(start = 2.dp)
+        ) {
+            Image(
+                painter = painterList[2],
+                "",
+                modifier = Modifier
+                    .fillMaxWidth(1.0f)
+                    .fillMaxHeight(0.5f)
+                    .padding(bottom = 2.dp)
+                    .background(imageList[1].colorAverage),
+                contentScale = ContentScale.Crop
+            )
+            Image(
+                painter = painterList[3],
+                "",
+                modifier = Modifier
+                    .fillMaxWidth(1.0f)
+                    .fillMaxHeight(1.0f)
+                    .padding(top = 2.dp)
+                    .background(imageList[2].colorAverage),
+                contentScale = ContentScale.Crop
+            )
+        }
+
     }
 }
 
