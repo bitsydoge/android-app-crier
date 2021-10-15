@@ -36,7 +36,6 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.cold0.crier.social.NotImplementedAlert
 import com.cold0.crier.social.R
@@ -50,26 +49,26 @@ import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
 
 @Composable
-fun CriComponent(cri: Post) {
+fun PostLayout(post: Post) {
     Row(
         modifier = Modifier
             .padding(all = 10.dp)
             .background(MaterialTheme.colors.surface)
     ) {
-        CriUserAvatar(cri)
+        PostUserAvatar(post)
         Spacer(modifier = Modifier.size(12.dp))
         Column {
-            CriUserInfo(cri)
-            CriContent(cri)
+            PostUserInfo(post)
+            PostContent(post)
             Spacer(modifier = Modifier.size(4.dp))
-            CriButtons(cri)
+            PostActions(post)
         }
     }
 }
 
 @Composable
-private fun CriUserAvatar(cri: Post) {
-    val user = cri.getUser()
+private fun PostUserAvatar(post: Post) {
+    val user = post.getUser()
     var notImplementedAlertShow by remember { mutableStateOf(false) }
     if (notImplementedAlertShow) {
         NotImplementedAlert { notImplementedAlertShow = false }
@@ -91,8 +90,8 @@ private fun CriUserAvatar(cri: Post) {
 }
 
 @Composable
-private fun CriUserInfo(cri: Post) {
-    val user = cri.getUser()
+private fun PostUserInfo(post: Post) {
+    val user = post.getUser()
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text(
             text = user.name,
@@ -114,7 +113,7 @@ private fun CriUserInfo(cri: Post) {
 }
 
 @Composable
-private fun CriContent(post: Post) {
+private fun PostContent(post: Post) {
     var numberClickable = 0
     val textAnnotated = buildAnnotatedString {
         val splits = post.content.split("#") // Split text with # so all odd index start with a #hashtag
@@ -159,24 +158,21 @@ private fun CriContent(post: Post) {
     )
     if (post.imageList.isNotEmpty()) {
         Spacer(modifier = Modifier.height(8.dp))
-        ImageGridLayout(imageList = post.imageList)
+        MultipleImageLayout(imageList = post.imageList)
     }
 }
 
 @Composable
-private fun ImageGridLayout(imageList: List<ImageHolder>) {
+private fun MultipleImageLayout(imageList: List<ImageHolder>) {
     if (imageList.isEmpty())
         return
 
-    val painterList = mutableListOf<ImagePainter>()
-
-    for (image in imageList) {
-        painterList.add(rememberImagePainter(
-            data = image.getDataForPainter(),
+    val painterList = imageList.map {
+        rememberImagePainter(
+            data = it.getDataForPainter(),
             builder = {
                 crossfade(true)
-            }
-        ))
+            })
     }
 
     Box(Modifier.clip(shape = RoundedCornerShape(16.dp))) {
@@ -377,7 +373,7 @@ private fun ImageListLayout(imageList: List<ImageHolder>, painterList: List<Pain
 }
 
 @Composable
-private fun CriButtons(cri: Post) {
+private fun PostActions(cri: Post) {
     var notImplementedAlertShow by remember { mutableStateOf(false) }
     if (notImplementedAlertShow) {
         NotImplementedAlert { notImplementedAlertShow = false }
@@ -463,7 +459,7 @@ private fun CriButtons(cri: Post) {
 @Composable
 fun MainPreview() {
     CrierSocialTheme {
-        CriComponent(getRandomPost())
+        PostLayout(getRandomPost())
     }
 }
 
@@ -471,6 +467,6 @@ fun MainPreview() {
 @Composable
 fun MainPreviewDark() {
     CrierSocialTheme(true) {
-        CriComponent(getRandomPost())
+        PostLayout(getRandomPost())
     }
 }

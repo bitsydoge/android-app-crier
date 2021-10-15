@@ -22,8 +22,8 @@ fun HomeScreen(padding: PaddingValues = PaddingValues()) {
             .padding(padding)
     ) {
         LazyColumn(state = lazyListState) {
-            items(DummyData.getCriList()) { cri ->
-                CriComponent(cri)
+            items(DummyData.getPostList()) { post ->
+                PostLayout(post)
                 Divider()
             }
         }

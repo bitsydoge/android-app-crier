@@ -118,9 +118,8 @@ object DummyData {
     }
 
     fun getRandomPost(): Post {
-        val imageList = mutableListOf<ImageHolder>()
-        repeat(nextInt(0, 10)) {
-            imageList.add(getRandomImage())
+        val imageList: List<ImageHolder> = List(nextInt(0, 10)) {
+            getRandomImage()
         }
 
         return Post(
@@ -136,13 +135,10 @@ object DummyData {
         )
     }
 
-    fun getCriList(): List<Post> {
-        val list = mutableListOf<Post>()
-        repeat(500)
-        {
-            list.add(getRandomPost())
+    fun getPostList(): List<Post> {
+        return List(500) {
+            getRandomPost()
         }
-        return Collections.unmodifiableList(list)
     }
 }
 
