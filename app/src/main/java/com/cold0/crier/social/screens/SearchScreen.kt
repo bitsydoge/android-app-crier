@@ -9,8 +9,7 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun SearchScreen() {
-    Box(Modifier.fillMaxSize())
-    {
+    Box(Modifier.fillMaxSize()) {
         Text("Search Screen", Modifier.align(Alignment.Center))
     }
 }

@@ -9,6 +9,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.cold0.crier.social.data.DummyData
 
@@ -16,13 +19,14 @@ import com.cold0.crier.social.data.DummyData
 @Composable
 fun HomeScreen(padding: PaddingValues = PaddingValues()) {
     val lazyListState = rememberLazyListState()
+    val list by remember { mutableStateOf(DummyData.getPostList()) }
     Box(
         Modifier
             .fillMaxSize()
             .padding(padding)
     ) {
         LazyColumn(state = lazyListState) {
-            items(DummyData.getPostList()) { post ->
+            items(list) { post ->
                 PostLayout(post)
                 Divider()
             }
