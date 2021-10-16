@@ -19,77 +19,77 @@ import com.cold0.crier.social.theme.CrierSocialTheme
 
 @Composable
 fun TopBar(
-    modifier: Modifier = Modifier,
-    onNavIconPressed: () -> Unit = {},
-    onActionIconPressed: () -> Unit = {}
+	modifier: Modifier = Modifier,
+	onNavIconPressed: () -> Unit = {},
+	onActionIconPressed: () -> Unit = {}
 ) {
-    Column {
-        TopAppBar(
-            backgroundColor = MaterialTheme.colors.surface,
-            contentColor = MaterialTheme.colors.onSurface,
-            modifier = modifier,
-            elevation = 0.dp,
-        ) {
-            Box(
-                Modifier
-                    .height(32.dp)
-                    .fillMaxWidth()
-            ) {
-                val user = DummyData.getCurrentUser()
+	Column {
+		TopAppBar(
+			backgroundColor = MaterialTheme.colors.surface,
+			contentColor = MaterialTheme.colors.onSurface,
+			modifier = modifier,
+			elevation = 0.dp,
+		) {
+			Box(
+				Modifier
+					.height(32.dp)
+					.fillMaxWidth()
+			) {
+				val user = DummyData.getCurrentUser()
 
-                // LEFT NAVIGATION
-                Row(
-                    Modifier
-                        .fillMaxHeight()
-                        .align(Alignment.CenterStart)
-                ) {
-                    IconButton(
-                        onClick = { onNavIconPressed() },
-                        enabled = true,
-                    ) {
-                        Image(
-                            painter = rememberImagePainter(
-                                data = user.avatar.getDataForPainter(),
-                                builder = {
-                                    crossfade(true)
-                                    transformations(CircleCropTransformation())
-                                }
-                            ),
-                            "",
-                            modifier = Modifier
-                                .size(32.dp),
-                            contentScale = ContentScale.Crop
-                        )
-                    }
-                }
+				// LEFT NAVIGATION
+				Row(
+					Modifier
+						.fillMaxHeight()
+						.align(Alignment.CenterStart)
+				) {
+					IconButton(
+						onClick = { onNavIconPressed() },
+						enabled = true,
+					) {
+						Image(
+							painter = rememberImagePainter(
+								data = user.avatar.getDataForPainter(),
+								builder = {
+									crossfade(true)
+									transformations(CircleCropTransformation())
+								}
+							),
+							"",
+							modifier = Modifier
+								.size(32.dp),
+							contentScale = ContentScale.Crop
+						)
+					}
+				}
 
-                // TITLE
-                Row(
-                    Modifier
-                        .fillMaxHeight()
-                        .align(Alignment.Center)
-                ) {
-                    Icon(Icons.Filled.Campaign, "TODO", tint = MaterialTheme.colors.primary, modifier = Modifier.size(32.dp))
-                }
+				// TITLE
+				Row(
+					Modifier
+						.fillMaxHeight()
+						.align(Alignment.Center)
+				) {
+					Icon(Icons.Filled.Campaign, "TODO", tint = MaterialTheme.colors.primary, modifier = Modifier.size(32.dp))
+				}
 
-                // ACTIONS
-                Row(
-                    Modifier
-                        .fillMaxHeight()
-                        .align(Alignment.CenterEnd),
-                    content = {
-                        IconButton(
-                            onClick = { onActionIconPressed() },
-                            enabled = true,
-                        ) {
-                            Icon(Icons.Outlined.AutoAwesome, "TODO", modifier = Modifier.size(32.dp))
-                        }
-                    }
-                )
-            }
-        }
-        Divider()
-    }
+				// ACTIONS
+				Row(
+					Modifier
+						.fillMaxHeight()
+						.align(Alignment.CenterEnd),
+					content = {
+						IconButton(
+							onClick = { onActionIconPressed() },
+							enabled = true,
+						) {
+							Icon(Icons.Outlined.AutoAwesome, "TODO", modifier = Modifier.size(32.dp))
+						}
+					}
+				)
+			}
+		}
+		Divider()
+	}
 }
 
 // ---------------------------------------------------------------
@@ -98,15 +98,15 @@ fun TopBar(
 @Preview
 @Composable
 fun TopBarPreview() {
-    CrierSocialTheme(darkTheme = false) {
-        TopBar()
-    }
+	CrierSocialTheme(darkTheme = false) {
+		TopBar()
+	}
 }
 
 @Preview
 @Composable
 fun TopBarPreviewDark() {
-    CrierSocialTheme(darkTheme = true) {
-        TopBar()
-    }
+	CrierSocialTheme(darkTheme = true) {
+		TopBar()
+	}
 }

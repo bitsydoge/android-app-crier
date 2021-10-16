@@ -9,8 +9,8 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun MessageScreen() {
-    Box(Modifier.fillMaxSize())
-    {
-        Text("Message Screen", Modifier.align(Alignment.Center))
-    }
+	Box(Modifier.fillMaxSize())
+	{
+		Text("Message Screen", Modifier.align(Alignment.Center))
+	}
 }

@@ -9,8 +9,8 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun NotificationScreen() {
-    Box(Modifier.fillMaxSize())
-    {
-        Text("Notification Screen", Modifier.align(Alignment.Center))
-    }
+	Box(Modifier.fillMaxSize())
+	{
+		Text("Notification Screen", Modifier.align(Alignment.Center))
+	}
 }

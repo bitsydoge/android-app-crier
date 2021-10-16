@@ -8,13 +8,13 @@ import com.cold0.crier.social.theme.CrierSocialTheme
 import com.cold0.crier.social.ui.MainScreen
 
 class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        installSplashScreen()
-        setContent {
-            CrierSocialTheme {
-                MainScreen()
-            }
-        }
-    }
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
+		installSplashScreen()
+		setContent {
+			CrierSocialTheme {
+				MainScreen()
+			}
+		}
+	}
 }

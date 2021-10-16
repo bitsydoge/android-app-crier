@@ -19,18 +19,18 @@ import com.cold0.crier.social.ui.components.PostLayout
 
 @Composable
 fun HomeScreen(padding: PaddingValues = PaddingValues()) {
-    val lazyListState = rememberLazyListState()
-    val list by remember { mutableStateOf(DummyData.getPostList()) }
-    Box(
-        Modifier
-            .fillMaxSize()
-            .padding(padding)
-    ) {
-        LazyColumn(state = lazyListState) {
-            items(list) { post ->
-                PostLayout(post)
-                Divider()
-            }
-        }
-    }
+	val lazyListState = rememberLazyListState()
+	val list by remember { mutableStateOf(DummyData.getPostList()) }
+	Box(
+		Modifier
+			.fillMaxSize()
+			.padding(padding)
+	) {
+		LazyColumn(state = lazyListState) {
+			items(list) { post ->
+				PostLayout(post)
+				Divider()
+			}
+		}
+	}
 }
