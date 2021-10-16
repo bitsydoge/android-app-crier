@@ -80,6 +80,9 @@ dependencies {
     implementation "com.google.accompanist:accompanist-pager:0.19.0"
     implementation "com.google.accompanist:accompanist-pager-indicators:0.19.0"
 
+    // SplashScreen
+    implementation 'androidx.core:core-splashscreen:1.0.0-alpha02'
+
     // -------------------------------
     // Debug Only
     // -------------------------------

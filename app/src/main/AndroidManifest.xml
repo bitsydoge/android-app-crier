@@ -13,13 +13,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Crier.Social">
         <activity
-            android:name="com.cold0.crier.social.MainActivity"
+            android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.Crier.Social.NoActionBar">
+            android:theme="@style/Theme.App.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
