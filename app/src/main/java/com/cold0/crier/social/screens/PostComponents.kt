@@ -40,7 +40,6 @@ import com.cold0.crier.social.R
 import com.cold0.crier.social.data.DummyData.getRandomPost
 import com.cold0.crier.social.model.ImageHolder
 import com.cold0.crier.social.model.Post
-import com.cold0.crier.social.screens.navigation.*
 import com.cold0.crier.social.theme.ColorUtils.grayed
 import com.cold0.crier.social.theme.CrierSocialTheme
 
