@@ -3,24 +3,30 @@ package com.cold0.crier.social.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.cold0.crier.social.composant.DraggableImage
+import coil.compose.rememberImagePainter
 import com.cold0.crier.social.model.ImageHolder
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
+import kotlin.math.absoluteValue
 
 // ------------------------------------------------
 // Public Layouts
@@ -132,9 +138,46 @@ private fun SingleImage(image: ImageHolder, painter: Painter, modifier: Modifier
                 modifier = Modifier
                     .fillMaxSize()
             ) {
-                DraggableImage(image, painter)
+                DraggableImage(image, painter, draggedOutside = {
+                    openFull = false
+                })
             }
         }
+    }
+}
+
+@Composable
+fun DraggableImage(image: ImageHolder, painter: Painter = rememberImagePainter(image.getDataForPainter()), draggedOutside: () -> (Unit)) {
+    val scale = remember { mutableStateOf(1f) }
+    //val rotationState = remember { mutableStateOf(0f) }
+    val offsetState = remember { mutableStateOf(Offset(0f, 0f)) }
+    val configuration = LocalConfiguration.current
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .pointerInput(Unit) {
+                detectVerticalDragGestures(onVerticalDrag = { _, offset ->
+                    offsetState.value += Offset(0.toDp().value, offset.toDp().value)
+                }, onDragEnd = {
+                    if (offsetState.value.y.absoluteValue > configuration.screenWidthDp / 2.5)
+                        draggedOutside()
+
+                    offsetState.value = Offset(0f, 0f)
+                })
+            }
+    ) {
+        Image(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .offset(0.dp, offsetState.value.y.dp)
+                .fillMaxSize()
+                .graphicsLayer(
+                    scaleX = maxOf(.5f, minOf(5f, scale.value)),
+                    scaleY = maxOf(.5f, minOf(5f, scale.value)),
+                    //rotationZ = rotationState.value
+                ),
+            painter = painter, contentDescription = ""
+        )
     }
 }
 
