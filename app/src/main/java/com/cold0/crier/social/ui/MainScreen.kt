@@ -1,4 +1,4 @@
-package com.cold0.crier.social.screens
+package com.cold0.crier.social.ui
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,11 +12,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.cold0.crier.social.NotImplementedAlert
-import com.cold0.crier.social.screens.navigation.BottomBar
-import com.cold0.crier.social.screens.navigation.Drawer
-import com.cold0.crier.social.screens.navigation.NavigationItem
-import com.cold0.crier.social.screens.navigation.TopBar
+import com.cold0.crier.social.utils.NotImplementedAlert
+import com.cold0.crier.social.ui.navigation.BottomBar
+import com.cold0.crier.social.ui.navigation.Drawer
+import com.cold0.crier.social.ui.navigation.TopBar
+import com.cold0.crier.social.ui.screens.HomeScreen
+import com.cold0.crier.social.ui.screens.MessageScreen
+import com.cold0.crier.social.ui.screens.NotificationScreen
+import com.cold0.crier.social.ui.screens.SearchScreen
 import kotlinx.coroutines.launch
 
 @Composable
@@ -42,7 +45,7 @@ fun MainScreen() {
         floatingActionButton = {
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentRoute = navBackStackEntry?.destination?.route
-            if (currentRoute == NavigationItem.Home.route)
+            if (currentRoute == ScreenNavItem.Home.route)
                 FloatingActionButton(
                     onClick = { notImplementedAlertShow = true },
                     backgroundColor = MaterialTheme.colors.primary,
@@ -65,17 +68,17 @@ fun MainScreen() {
         }
 
         Surface() {
-            NavHost(navController, startDestination = NavigationItem.Home.route) {
-                composable(NavigationItem.Home.route) {
+            NavHost(navController, startDestination = ScreenNavItem.Home.route) {
+                composable(ScreenNavItem.Home.route) {
                     HomeScreen(padding = paddingValues)
                 }
-                composable(NavigationItem.Search.route) {
+                composable(ScreenNavItem.Search.route) {
                     SearchScreen()
                 }
-                composable(NavigationItem.Notification.route) {
+                composable(ScreenNavItem.Notification.route) {
                     NotificationScreen()
                 }
-                composable(NavigationItem.Message.route) {
+                composable(ScreenNavItem.Message.route) {
                     MessageScreen()
                 }
             }

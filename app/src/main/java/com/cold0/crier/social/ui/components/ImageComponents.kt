@@ -1,4 +1,4 @@
-package com.cold0.crier.social.screens
+package com.cold0.crier.social.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

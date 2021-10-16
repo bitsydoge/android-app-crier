@@ -1,4 +1,4 @@
-package com.cold0.crier.social.screens
+package com.cold0.crier.social.ui.screens
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,6 +14,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.cold0.crier.social.data.DummyData
+import com.cold0.crier.social.ui.components.PostLayout
 
 
 @Composable

@@ -1,4 +1,4 @@
-package com.cold0.crier.social.screens.navigation
+package com.cold0.crier.social.ui.navigation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -24,10 +24,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
-import com.cold0.crier.social.NotImplementedAlert
 import com.cold0.crier.social.data.DummyData
 import com.cold0.crier.social.theme.ColorUtils.grayed
 import com.cold0.crier.social.theme.CrierSocialTheme
+import com.cold0.crier.social.utils.NotImplementedAlert
 
 @Composable
 fun Drawer() {

@@ -1,4 +1,4 @@
-package com.cold0.crier.social
+package com.cold0.crier.social.utils
 
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.MaterialTheme

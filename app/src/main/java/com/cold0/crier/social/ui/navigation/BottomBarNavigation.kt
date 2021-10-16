@@ -1,4 +1,4 @@
-package com.cold0.crier.social.screens.navigation
+package com.cold0.crier.social.ui.navigation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.*
@@ -10,14 +10,15 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.cold0.crier.social.theme.CrierSocialTheme
+import com.cold0.crier.social.ui.ScreenNavItem
 
 @Composable
 fun BottomBar(navController: NavController) {
     val items = listOf(
-        NavigationItem.Home,
-        NavigationItem.Search,
-        NavigationItem.Notification,
-        NavigationItem.Message,
+        ScreenNavItem.Home,
+        ScreenNavItem.Search,
+        ScreenNavItem.Notification,
+        ScreenNavItem.Message,
     )
     Column() {
         Divider()

@@ -1,4 +1,4 @@
-package com.cold0.crier.social.screens
+package com.cold0.crier.social.ui.components
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -35,13 +35,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
-import com.cold0.crier.social.NotImplementedAlert
 import com.cold0.crier.social.R
 import com.cold0.crier.social.data.DummyData.getRandomPost
 import com.cold0.crier.social.model.ImageHolder
 import com.cold0.crier.social.model.Post
 import com.cold0.crier.social.theme.ColorUtils.grayed
 import com.cold0.crier.social.theme.CrierSocialTheme
+import com.cold0.crier.social.utils.NotImplementedAlert
 
 @Composable
 fun PostLayout(post: Post) {

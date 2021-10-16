@@ -1,4 +1,4 @@
-package com.cold0.crier.social.screens
+package com.cold0.crier.social.ui.screens
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,9 +8,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun NotificationScreen() {
-    Box(Modifier.fillMaxSize())
-    {
-        Text("Notification Screen", Modifier.align(Alignment.Center))
+fun SearchScreen() {
+    Box(Modifier.fillMaxSize()) {
+        Text("Search Screen", Modifier.align(Alignment.Center))
     }
 }
