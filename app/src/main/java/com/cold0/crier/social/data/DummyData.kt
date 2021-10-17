@@ -13,75 +13,53 @@ import kotlin.random.Random.Default.nextFloat
 import kotlin.random.Random.Default.nextInt
 
 object DummyData {
-	private val userList = listOf(
-		User(
-			uid = UUID.randomUUID(),
-			name = "B.O.B.Y",
-			handle = "Boby5413",
-			verified = nextBoolean(),
-			follower = nextInt(0, 50000),
-			following = nextInt(0, 500000),
-			avatar = ImageHolder(400, 400, getRandomColor(), "https://i.pravatar.cc/400?img=${nextInt(0, 100)}")
-		),
-		User(
-			uid = UUID.randomUUID(),
-			name = "Jim",
-			handle = "Jimmy134",
-			verified = nextBoolean(),
-			follower = nextInt(0, 50000),
-			following = nextInt(0, 500000),
-			avatar = ImageHolder(400, 400, getRandomColor(), "https://i.pravatar.cc/400?img=${nextInt(0, 100)}")
-		),
-		User(
-			uid = UUID.randomUUID(),
-			name = "幽波紋 DAM",
-			handle = "Jojo____Fan",
-			verified = nextBoolean(),
-			follower = nextInt(0, 50000),
-			following = nextInt(0, 500000),
-			avatar = ImageHolder(400, 400, getRandomColor(), "https://i.pravatar.cc/400?img=${nextInt(0, 100)}")
-		),
-		User(
-			uid = UUID.randomUUID(),
-			name = "ElFilo",
-			handle = "Filo_552",
-			verified = nextBoolean(),
-			follower = nextInt(0, 50000),
-			following = nextInt(0, 500000),
-			avatar = ImageHolder(400, 400, getRandomColor(), "https://i.pravatar.cc/400?img=${nextInt(0, 100)}")
-		),
-		User(
-			uid = UUID.randomUUID(),
-			name = "Mula COMMISSION OPEN",
-			handle = "Mula123500",
-			verified = nextBoolean(),
-			follower = nextInt(0, 50000),
-			following = nextInt(0, 500000),
-			avatar = ImageHolder(400, 400, getRandomColor(), "https://i.pravatar.cc/400?img=${nextInt(0, 100)}")
-		),
-		User(
-			uid = UUID.randomUUID(),
-			name = "Nyto El Magnifico",
-			handle = "Nyto__123",
-			verified = nextBoolean(),
-			follower = nextInt(0, 500000),
-			following = nextInt(0, 500000),
-			avatar = ImageHolder(400, 400, getRandomColor(), "https://i.pravatar.cc/400?img=${nextInt(0, 100)}")
-		),
-		User(
-			uid = UUID.randomUUID(),
-			name = "13/02/1999 Never Forget",
-			handle = "ESO-AAA",
-			verified = nextBoolean(),
-			follower = nextInt(0, 50000),
-			following = nextInt(0, 500000),
-			avatar = ImageHolder(400, 400, getRandomColor(), "https://i.pravatar.cc/400?img=${nextInt(0, 100)}")
-		),
-	)
 
-	private fun getRandomUser(): User = userList.random()
+	// ----------------------------------------------
+	// Private
+	// ----------------------------------------------
+	private fun getRandomName(): String {
+		return listOf(
+			"${getRandomString(1)}.O.${getRandomString(1)}.Y",
+			"Jim",
+			"幽波紋 DAM",
+			"El${getRandomString(4)}",
+			"${getRandomString(4)} COMMISSION OPEN",
+			"${getRandomString(4)} El Magnifico",
+			"13/02/1999 Never Forget",
+			"Джон Сина",
+			"ボブ・レノン",
+			"طماطم حمراء"
+		).random()
+	}
 
-	fun getCurrentUser(): User = userList.first()
+	private fun getRandomHandle(): String {
+		return listOf(
+			"Boby${nextInt(0, 10000).toString().padStart(4)}",
+			"Jimmy${nextInt(0, 1000000).toString().padStart(6)}",
+			"Jojo____Fan__${nextInt(0, 100).toString().padStart(2)}",
+			"Filo_${nextInt(0, 1000).toString().padStart(3)}",
+			"Mula${nextInt(0, 1000000).toString().padStart(6)}",
+			"Nyto__${nextInt(0, 1000).toString().padStart(3)}",
+			"ESO-${getRandomString(3).padStart(3)}",
+		).random()
+	}
+
+	private fun getRandomString(length: Int, uppercase: Boolean = true, lowercase: Boolean = true, numbers: Boolean = false): String {
+		if (!lowercase && !numbers && !uppercase)
+			return ""
+
+		val allowedChars: MutableList<Char> = mutableListOf()
+		if (uppercase)
+			allowedChars += ('A'..'Z')
+		if (lowercase)
+			allowedChars += ('a'..'z')
+		if (numbers)
+			allowedChars += ('0'..'9')
+
+		return (1..length)
+			.map { allowedChars.random() }
+			.joinToString("")
+	}
 
 	private fun getRandomLoremIpsum(): String {
 		return listOf(
@@ -93,19 +71,15 @@ object DummyData {
 		).random().substring(0, nextInt(20, 250))
 	}
 
-	fun getUserFromUID(uid: UUID): User {
-		return userList.find { it.uid == uid } ?: User(
-			UUID(0, 0), "ERROR", "ERROR", verified = false,
-			follower = 0,
-			following = 0,
-		)
-	}
-
 	private fun getRandomColor(): Color {
 		val hue = nextFloat() * 360
 		val sat = nextFloat() * (.6f - .2f) + .2f
 		val value = nextFloat() * (.6f - .35f) + .6f
 		return Color(HSLToColor(floatArrayOf(hue, sat, value)))
+	}
+
+	private fun getRandomAvatar(notRandom: Int? = null): ImageHolder {
+		return ImageHolder(400, 400, getRandomColor(), "https://i.pravatar.cc/400?img=${notRandom ?: nextInt(0, 50)}")
 	}
 
 	private fun getRandomImage(): ImageHolder {
@@ -119,7 +93,7 @@ object DummyData {
 		)
 	}
 
-	fun getRandomPost(): Post {
+	private fun getRandomPost(): Post {
 		val imageList: List<ImageHolder> = List(nextInt(0, 10)) {
 			getRandomImage()
 		}
@@ -137,10 +111,39 @@ object DummyData {
 		)
 	}
 
-	fun getPostList(): List<Post> {
-		return List(500) {
-			getRandomPost()
-		}
+	private val userList = List(50) {
+		User(
+			uid = UUID.randomUUID(),
+			name = getRandomName(),
+			handle = getRandomHandle(),
+			verified = nextBoolean(),
+			follower = nextInt(0, 50000),
+			following = nextInt(0, 500000),
+			avatar = getRandomAvatar(it)
+		)
 	}
+
+	private val currentUser: User = userList.random()
+
+	private fun getRandomUser(): User = userList.random()
+
+	private val postsList = List(500) {
+		getRandomPost()
+	}
+
+	// ----------------------------------------------
+	// Public
+	// ----------------------------------------------
+	fun getCurrentUser(): User = currentUser
+
+	fun getUserFromUID(uid: UUID): User {
+		return userList.find { it.uid == uid } ?: User(
+			UUID(0, 0), "ERROR", "ERROR", verified = false,
+			follower = 0,
+			following = 0,
+		)
+	}
+
+	fun getPostList(): List<Post> = postsList
 }
 

@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.cold0.crier.social.R
-import com.cold0.crier.social.data.DummyData.getRandomPost
+import com.cold0.crier.social.data.DummyData.getPostList
 import com.cold0.crier.social.model.ImageHolder
 import com.cold0.crier.social.model.Post
 import com.cold0.crier.social.theme.ColorUtils.grayed
@@ -162,37 +162,29 @@ private fun MultipleImageLayout(imageList: List<ImageHolder>) {
 	if (imageList.isEmpty())
 		return
 
-	val painterList = imageList.map {
-		rememberImagePainter(
-			data = it.getDataForPainter(),
-			builder = {
-				crossfade(true)
-			})
-	}
-
 	Box(Modifier.clip(shape = RoundedCornerShape(16.dp))) {
 		when {
 			imageList.size == 1 -> {
-				ImageLayout1(image = imageList[0], painter = painterList[0])
+				ImageLayout1(image = imageList[0])
 			}
 			imageList.size == 2 -> {
-				ImageLayout2(imageList = imageList, painterList = painterList)
+				ImageLayout2(imageList = imageList)
 			}
 			imageList.size == 3 -> {
-				ImageLayout3(imageList = imageList, painterList = painterList)
+				ImageLayout3(imageList = imageList)
 			}
 			imageList.size == 4 -> {
-				ImageLayout4(imageList = imageList, painterList = painterList)
+				ImageLayout4(imageList = imageList)
 			}
 			imageList.size > 4 -> {
-				ImageLayoutN(imageList = imageList, painterList = painterList)
+				ImageLayoutN(imageList = imageList)
 			}
 		}
 	}
 }
 
 @Composable
-private fun PostActions(cri: Post) {
+private fun PostActions(post: Post) {
 	var notImplementedAlertShow by remember { mutableStateOf(false) }
 	if (notImplementedAlertShow) {
 		NotImplementedAlert { notImplementedAlertShow = false }
@@ -215,7 +207,7 @@ private fun PostActions(cri: Post) {
 			}
 			Spacer(modifier = Modifier.size(4.dp))
 			Text(
-				text = cri.commentsCount.toString(),
+				text = post.commentsCount.toString(),
 				modifier = Modifier
 					.fillMaxHeight()
 					.align(Alignment.CenterVertically)
@@ -227,14 +219,14 @@ private fun PostActions(cri: Post) {
 			) {
 				Icon(
 					painterResource(R.drawable.ic_reblog),
-					tint = if (cri.reblogged) MaterialTheme.colors.primary else MaterialTheme.colors.onSurface,
+					tint = if (post.reblogged) MaterialTheme.colors.primary else MaterialTheme.colors.onSurface,
 					contentDescription = null, //TODO,
 					modifier = Modifier.size(32.dp)
 				)
 			}
 			Spacer(modifier = Modifier.size(4.dp))
 			Text(
-				text = cri.reblogCount.toString(),
+				text = post.reblogCount.toString(),
 				modifier = Modifier
 					.fillMaxHeight()
 					.align(Alignment.CenterVertically)
@@ -245,14 +237,14 @@ private fun PostActions(cri: Post) {
 				onClick = { notImplementedAlertShow = true },
 			) {
 				Icon(
-					if (cri.liked) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
-					tint = if (cri.liked) MaterialTheme.colors.primary else MaterialTheme.colors.onSurface,
+					if (post.liked) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+					tint = if (post.liked) MaterialTheme.colors.primary else MaterialTheme.colors.onSurface,
 					contentDescription = null//TODO
 				)
 			}
 			Spacer(modifier = Modifier.size(4.dp))
 			Text(
-				text = cri.likeCount.toString(),
+				text = post.likeCount.toString(),
 				modifier = Modifier
 					.fillMaxHeight()
 					.align(Alignment.CenterVertically)
@@ -278,7 +270,7 @@ private fun PostActions(cri: Post) {
 @Composable
 fun MainPreview() {
 	CrierSocialTheme {
-		PostLayout(getRandomPost())
+		PostLayout(getPostList().first())
 	}
 }
 
@@ -286,6 +278,6 @@ fun MainPreview() {
 @Composable
 fun MainPreviewDark() {
 	CrierSocialTheme(true) {
-		PostLayout(getRandomPost())
+		PostLayout(getPostList().first())
 	}
 }

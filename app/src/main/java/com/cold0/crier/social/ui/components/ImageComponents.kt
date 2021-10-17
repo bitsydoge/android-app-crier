@@ -10,17 +10,15 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.lerp
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.core.math.MathUtils.clamp
 import coil.compose.rememberImagePainter
 import com.cold0.crier.social.model.ImageHolder
 import com.google.accompanist.pager.HorizontalPager
@@ -32,26 +30,26 @@ import kotlin.math.absoluteValue
 // Public Layouts
 // ------------------------------------------------
 @Composable
-fun ImageLayout1(image: ImageHolder, painter: Painter) {
+fun ImageLayout1(image: ImageHolder) {
 	SingleImage(
-		image = image, painter = painter, Modifier
+		image = image, Modifier
 			.fillMaxWidth()
 			.aspectRatio(image.width / image.height.toFloat())
 	)
 }
 
 @Composable
-fun ImageLayout2(imageList: List<ImageHolder>, painterList: List<Painter>) {
+fun ImageLayout2(imageList: List<ImageHolder>) {
 	Row(horizontalArrangement = Arrangement.Center) {
 		SingleImage(
-			imageList[0], painterList[0],
+			imageList[0],
 			Modifier
 				.fillMaxWidth(0.5f)
 				.height(200.dp)
 				.padding(end = 2.dp)
 		)
 		SingleImage(
-			imageList[1], painterList[1],
+			imageList[1],
 			Modifier
 				.fillMaxWidth(1.0f)
 				.height(200.dp)
@@ -61,29 +59,32 @@ fun ImageLayout2(imageList: List<ImageHolder>, painterList: List<Painter>) {
 }
 
 @Composable
-fun ImageLayout3(imageList: List<ImageHolder>, painterList: List<Painter>) {
+fun ImageLayout3(imageList: List<ImageHolder>) {
 	Row(horizontalArrangement = Arrangement.Center) {
 		SingleImage(
-			imageList[0], painterList[0],
+			imageList[0],
 			Modifier
 				.fillMaxWidth(0.5f)
 				.height(200.dp)
 				.padding(end = 2.dp)
 		)
-		DoubleImageColumn(painterList[1], painterList[2], imageList[1], imageList[2], PaddingValues(start = 2.dp), 1.0f)
+		DoubleImageColumn(imageList[1], imageList[2], PaddingValues(start = 2.dp), 1.0f)
 	}
 }
 
 @Composable
-fun ImageLayout4(imageList: List<ImageHolder>, painterList: List<Painter>) {
+fun ImageLayout4(imageList: List<ImageHolder>) {
 	Row(horizontalArrangement = Arrangement.Center) {
-		DoubleImageColumn(painterList[0], painterList[1], imageList[0], imageList[1], PaddingValues(end = 2.dp), 0.5f)
-		DoubleImageColumn(painterList[2], painterList[3], imageList[2], imageList[3], PaddingValues(start = 2.dp), 1.0f)
+		DoubleImageColumn(imageList[0], imageList[1], PaddingValues(end = 2.dp), 0.5f)
+		DoubleImageColumn(imageList[2], imageList[3], PaddingValues(start = 2.dp), 1.0f)
 	}
 }
 
 @Composable
-fun ImageLayoutN(imageList: List<ImageHolder>, painterList: List<Painter>) {
+fun ImageLayoutN(imageList: List<ImageHolder>) {
+	// Force Preload all Images
+	for (image in imageList) Image(painter = rememberImagePainter(image.getDataForPainter()), contentDescription = null, modifier = Modifier.size(1.dp))
+
 	Column(
 		Modifier
 			.fillMaxSize()
@@ -96,10 +97,11 @@ fun ImageLayoutN(imageList: List<ImageHolder>, painterList: List<Painter>) {
 			modifier = Modifier.fillMaxWidth(),
 		) { page ->
 			SingleImage(
-				imageList[page], painterList[page],
+				imageList[page],
 				Modifier
 					.fillMaxWidth()
-					.height(200.dp)
+					.height(200.dp),
+				true
 			)
 		}
 		HorizontalPagerIndicator(
@@ -116,11 +118,18 @@ fun ImageLayoutN(imageList: List<ImageHolder>, painterList: List<Painter>) {
 // ------------------------------------------------
 
 @Composable
-private fun SingleImage(image: ImageHolder, painter: Painter, modifier: Modifier) {
+private fun SingleImage(image: ImageHolder, modifier: Modifier, sizeHack: Boolean = false) {
 	var openFull by remember { mutableStateOf(false) }
 	Image(
-		painter = painter,
-		"",
+		painter = rememberImagePainter(
+			data = image.getDataForPainter(),
+			builder = {
+				if (sizeHack)
+					size(image.width, image.height)
+				crossfade(true)
+			},
+		),
+		"", //TODO
 		modifier = modifier.then(
 			Modifier
 				.background(image.colorAverage)
@@ -133,56 +142,59 @@ private fun SingleImage(image: ImageHolder, painter: Painter, modifier: Modifier
 
 	if (openFull) {
 		Dialog(onDismissRequest = { openFull = false }, properties = DialogProperties(usePlatformDefaultWidth = false)) {
-			Surface(
-				color = lerp(MaterialTheme.colors.surface, image.colorAverage, 0.2f),
-				modifier = Modifier
-					.fillMaxSize()
-			) {
-				DraggableImage(image, painter, draggedOutside = {
-					openFull = false
-				})
-			}
+			DraggableImage(image = image, draggedOutside = {
+				openFull = false
+			})
 		}
 	}
 }
 
 @Composable
-fun DraggableImage(image: ImageHolder, painter: Painter = rememberImagePainter(image.getDataForPainter()), draggedOutside: () -> (Unit)) {
-	val scale = remember { mutableStateOf(1f) }
-	//val rotationState = remember { mutableStateOf(0f) }
-	val offsetState = remember { mutableStateOf(Offset(0f, 0f)) }
+fun DraggableImage(image: ImageHolder, draggedOutside: () -> (Unit)) {
+	val offsetState = remember { mutableStateOf(0f) }
 	val configuration = LocalConfiguration.current
-	Box(
+	val offsetToQuit = configuration.screenHeightDp
+	Surface(
+		color = lerp(MaterialTheme.colors.surface, image.colorAverage, 0.2f).copy(
+			alpha = clamp(
+				1.0f - (offsetState.value.absoluteValue / offsetToQuit),
+				0.0f,
+				1.0f
+			)
+		),
 		modifier = Modifier
 			.fillMaxSize()
-			.pointerInput(Unit) {
-				detectVerticalDragGestures(onVerticalDrag = { _, offset ->
-					offsetState.value += Offset(0.toDp().value, offset.toDp().value)
-				}, onDragEnd = {
-					if (offsetState.value.y.absoluteValue > configuration.screenWidthDp / 2.5)
-						draggedOutside()
-
-					offsetState.value = Offset(0f, 0f)
-				})
-			}
 	) {
-		Image(
+		Box(
 			modifier = Modifier
-				.align(Alignment.Center)
-				.offset(0.dp, offsetState.value.y.dp)
 				.fillMaxSize()
-				.graphicsLayer(
-					scaleX = maxOf(.5f, minOf(5f, scale.value)),
-					scaleY = maxOf(.5f, minOf(5f, scale.value)),
-					//rotationZ = rotationState.value
-				),
-			painter = painter, contentDescription = ""
-		)
+				.pointerInput(Unit) {
+					detectVerticalDragGestures(
+						onVerticalDrag = { _, offset ->
+							offsetState.value += offset.toDp().value
+						},
+						onDragEnd = {
+							if (offsetState.value.absoluteValue > configuration.screenHeightDp / 4)
+								draggedOutside()
+
+							offsetState.value = 0f
+						})
+				}
+		) {
+			Image(
+				modifier = Modifier
+					.align(Alignment.Center)
+					.offset(0.dp, offsetState.value.dp)
+					.fillMaxSize(),
+				painter = rememberImagePainter(image.getDataForPainter()),
+				contentDescription = "" //TODO
+			)
+		}
 	}
 }
 
 @Composable
-private fun DoubleImageColumn(painter: Painter, painter2: Painter, image: ImageHolder, image2: ImageHolder, paddingValues: PaddingValues, fraction: Float) {
+private fun DoubleImageColumn(image: ImageHolder, image2: ImageHolder, paddingValues: PaddingValues, fraction: Float) {
 	Column(
 		modifier = Modifier
 			.fillMaxWidth(fraction)
@@ -190,14 +202,14 @@ private fun DoubleImageColumn(painter: Painter, painter2: Painter, image: ImageH
 			.padding(paddingValues)
 	) {
 		SingleImage(
-			image, painter,
+			image,
 			Modifier
 				.fillMaxWidth(1.0f)
 				.fillMaxHeight(0.5f)
 				.padding(bottom = 2.dp)
 		)
 		SingleImage(
-			image2, painter2,
+			image2,
 			Modifier
 				.fillMaxWidth(1.0f)
 				.fillMaxHeight(1.0f)
