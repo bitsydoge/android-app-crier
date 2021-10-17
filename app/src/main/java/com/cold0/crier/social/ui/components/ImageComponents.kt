@@ -14,12 +14,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.math.MathUtils.clamp
+import coil.compose.LocalImageLoader
 import coil.compose.rememberImagePainter
+import coil.request.ImageRequest
 import com.cold0.crier.social.model.ImageHolder
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
@@ -83,7 +88,21 @@ fun ImageLayout4(imageList: List<ImageHolder>) {
 @Composable
 fun ImageLayoutN(imageList: List<ImageHolder>) {
 	// Force Preload all Images
-	for (image in imageList) Image(painter = rememberImagePainter(image.getDataForPainter()), contentDescription = null, modifier = Modifier.size(1.dp))
+	//for (image in imageList) Image(painter = rememberImagePainter(image.getDataForPainter()), contentDescription = null, modifier = Modifier.size(1.dp))
+
+	var size by remember { mutableStateOf(IntSize.Zero) }
+	val context = LocalContext.current
+	val imageLoader = LocalImageLoader.current
+
+	if (size != IntSize.Zero) {
+		for (image in imageList) {
+			val request = ImageRequest.Builder(context)
+				.data(image.getDataForPainter())
+				.size(size.width, size.height)
+				.build()
+			imageLoader.enqueue(request)
+		}
+	}
 
 	Column(
 		Modifier
@@ -94,7 +113,11 @@ fun ImageLayoutN(imageList: List<ImageHolder>) {
 		HorizontalPager(
 			count = imageList.size,
 			state = pagerState,
-			modifier = Modifier.fillMaxWidth(),
+			modifier = Modifier
+				.fillMaxWidth()
+				.onGloballyPositioned { coordinates ->
+					size = coordinates.size
+				},
 		) { page ->
 			SingleImage(
 				imageList[page],

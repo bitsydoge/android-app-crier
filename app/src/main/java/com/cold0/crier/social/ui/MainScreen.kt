@@ -15,6 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import com.cold0.crier.social.ui.navigation.BottomBar
 import com.cold0.crier.social.ui.navigation.Drawer
 import com.cold0.crier.social.ui.navigation.TopBar
+import com.cold0.crier.social.ui.navigation.TopBarExtra
 import com.cold0.crier.social.ui.screens.HomeScreen
 import com.cold0.crier.social.ui.screens.MessageScreen
 import com.cold0.crier.social.ui.screens.NotificationScreen
@@ -27,24 +28,45 @@ fun MainScreen() {
 	val navController = rememberNavController()
 	val scaffoldState = rememberScaffoldState()
 	val scope = rememberCoroutineScope() // For open() and close() of the drawer
+
 	var notImplementedAlertShow by remember { mutableStateOf(false) }
 	if (notImplementedAlertShow) {
 		NotImplementedAlert { notImplementedAlertShow = false }
 	}
+
+	val navBackStackEntry by navController.currentBackStackEntryAsState()
+	val currentRoute = navBackStackEntry?.destination?.route
 	Scaffold(
 		scaffoldState = scaffoldState,
 		topBar = {
-			TopBar(
-				onNavIconPressed = { scope.launch { if (scaffoldState.drawerState.isClosed) scaffoldState.drawerState.open() else scaffoldState.drawerState.close() } },
-				onActionIconPressed = { notImplementedAlertShow = true }
-			)
+			when (currentRoute) {
+				NavigationScreenItem.Home.route ->
+					TopBar(
+						onNavIconPressed = { scope.launch { if (scaffoldState.drawerState.isClosed) scaffoldState.drawerState.open() else scaffoldState.drawerState.close() } },
+						onActionIconPressed = { notImplementedAlertShow = true }
+					)
+				NavigationScreenItem.Search.route -> TopBarExtra(
+					onNavIconPressed = { scope.launch { if (scaffoldState.drawerState.isClosed) scaffoldState.drawerState.open() else scaffoldState.drawerState.close() } },
+					onActionIconPressed = { notImplementedAlertShow = true },
+					title = "Search"
+				)
+				NavigationScreenItem.Notification.route -> TopBarExtra(
+					onNavIconPressed = { scope.launch { if (scaffoldState.drawerState.isClosed) scaffoldState.drawerState.open() else scaffoldState.drawerState.close() } },
+					onActionIconPressed = { notImplementedAlertShow = true },
+					title = "Notification"
+				)
+				NavigationScreenItem.Message.route ->
+					TopBarExtra(
+						onNavIconPressed = { scope.launch { if (scaffoldState.drawerState.isClosed) scaffoldState.drawerState.open() else scaffoldState.drawerState.close() } },
+						onActionIconPressed = { notImplementedAlertShow = true },
+						title = "Message"
+					)
+			}
 		},
 		drawerContent = { Drawer() },
 		drawerScrimColor = Color.Black.copy(alpha = 0.5f),
 		drawerElevation = 0.dp,
 		floatingActionButton = {
-			val navBackStackEntry by navController.currentBackStackEntryAsState()
-			val currentRoute = navBackStackEntry?.destination?.route
 			if (currentRoute == NavigationScreenItem.Home.route)
 				FloatingActionButton(
 					onClick = { notImplementedAlertShow = true },
@@ -58,6 +80,7 @@ fun MainScreen() {
 			BottomBar(navController)
 		}
 	) { paddingValues: PaddingValues ->
+
 		if (scaffoldState.drawerState.isOpen) {
 			BackHandler {
 				scope.launch {
