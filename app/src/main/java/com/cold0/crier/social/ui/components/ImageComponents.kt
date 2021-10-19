@@ -123,8 +123,7 @@ fun ImageLayoutN(imageList: List<ImageHolder>) {
 				imageList[page],
 				Modifier
 					.fillMaxWidth()
-					.height(200.dp),
-				true
+					.height(200.dp)
 			)
 		}
 		HorizontalPagerIndicator(
@@ -141,14 +140,12 @@ fun ImageLayoutN(imageList: List<ImageHolder>) {
 // ------------------------------------------------
 
 @Composable
-private fun SingleImage(image: ImageHolder, modifier: Modifier, sizeHack: Boolean = false) {
+private fun SingleImage(image: ImageHolder, modifier: Modifier) {
 	var openFull by remember { mutableStateOf(false) }
 	Image(
 		painter = rememberImagePainter(
 			data = image.getDataForPainter(),
 			builder = {
-				if (sizeHack)
-					size(image.width, image.height)
 				crossfade(true)
 			},
 		),
