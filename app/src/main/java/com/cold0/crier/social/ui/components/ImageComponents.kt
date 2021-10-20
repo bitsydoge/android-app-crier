@@ -3,13 +3,14 @@ package com.cold0.crier.social.ui.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectVerticalDragGestures
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.input.pointer.pointerInput
@@ -162,7 +163,7 @@ private fun SingleImage(imageList: List<ImageHolder>, index: Int, modifier: Modi
 
 	if (openFull) {
 		Dialog(onDismissRequest = { openFull = false }, properties = DialogProperties(usePlatformDefaultWidth = false)) {
-			DraggableImage(image = imageList[index], draggedOutside = {
+			DraggableImage(imageList = imageList, index, draggedOutside = {
 				openFull = false
 			})
 		}
@@ -170,14 +171,14 @@ private fun SingleImage(imageList: List<ImageHolder>, index: Int, modifier: Modi
 }
 
 @Composable
-fun DraggableImage(image: ImageHolder, draggedOutside: () -> (Unit)) {
-	val offsetState = remember { mutableStateOf(0f) }
+fun DraggableImage(imageList: List<ImageHolder>, current: Int, draggedOutside: () -> (Unit)) {
+	val offsetState = remember { mutableStateOf(Offset(0f, 0f)) }
 	val configuration = LocalConfiguration.current
 	val offsetToQuit = configuration.screenHeightDp
 	Surface(
-		color = lerp(MaterialTheme.colors.surface, image.colorAverage, 0.2f).copy(
+		color = lerp(MaterialTheme.colors.surface, imageList[current].colorAverage, 0.2f).copy(
 			alpha = clamp(
-				1.0f - (offsetState.value.absoluteValue / offsetToQuit),
+				1.0f - (offsetState.value.y.absoluteValue / offsetToQuit),
 				0.0f,
 				1.0f
 			)
@@ -189,26 +190,65 @@ fun DraggableImage(image: ImageHolder, draggedOutside: () -> (Unit)) {
 			modifier = Modifier
 				.fillMaxSize()
 				.pointerInput(Unit) {
-					detectVerticalDragGestures(
-						onVerticalDrag = { _, offset ->
-							offsetState.value += offset.toDp().value
+					detectDragGestures(
+						onDrag = { _, offset ->
+							offsetState.value += Offset(offset.x.toDp().value, offset.y.toDp().value)
 						},
 						onDragEnd = {
-							if (offsetState.value.absoluteValue > configuration.screenHeightDp / 4)
+							if (offsetState.value.y.absoluteValue > configuration.screenHeightDp / 4)
 								draggedOutside()
 
-							offsetState.value = 0f
+							offsetState.value = Offset(0f, 0f)
 						})
 				}
 		) {
-			Image(
-				modifier = Modifier
+			var size by remember { mutableStateOf(IntSize.Zero) }
+			val context = LocalContext.current
+			val imageLoader = LocalImageLoader.current
+
+			if (size != IntSize.Zero) {
+				for (image in imageList) {
+					val request = ImageRequest.Builder(context)
+						.data(image.getDataForPainter())
+						.size(size.width, size.height)
+						.build()
+					imageLoader.enqueue(request)
+				}
+			}
+
+			Column(
+				Modifier
+					.offset(0.dp, offsetState.value.y.dp)
 					.align(Alignment.Center)
-					.offset(0.dp, offsetState.value.dp)
-					.fillMaxSize(),
-				painter = rememberImagePainter(image.getDataForPainter()),
-				contentDescription = "" //TODO
-			)
+					.fillMaxSize()
+					.background(Color(0.5f, 0.5f, 0.5f, .1f))
+			) {
+				val pagerState = rememberPagerState()
+				HorizontalPager(
+					count = imageList.size,
+					state = pagerState,
+					modifier = Modifier
+						.fillMaxWidth()
+						.onGloballyPositioned { coordinates ->
+							size = coordinates.size
+						},
+				) { page ->
+					Image(
+						modifier = Modifier
+							.fillMaxSize(),
+						painter = rememberImagePainter(imageList[page].getDataForPainter()),
+						contentDescription = "" //TODO
+					)
+				}
+				HorizontalPagerIndicator(
+					pagerState = pagerState,
+					modifier = Modifier
+						.padding(16.dp)
+						.align(Alignment.CenterHorizontally)
+				)
+			}
+
+
 		}
 	}
 }
