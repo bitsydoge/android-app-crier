@@ -165,7 +165,7 @@ private fun MultipleImageLayout(imageList: List<ImageHolder>) {
 	Box(Modifier.clip(shape = RoundedCornerShape(16.dp))) {
 		when {
 			imageList.size == 1 -> {
-				ImageLayout1(image = imageList[0])
+				ImageLayout1(imageList = imageList)
 			}
 			imageList.size == 2 -> {
 				ImageLayout2(imageList = imageList)

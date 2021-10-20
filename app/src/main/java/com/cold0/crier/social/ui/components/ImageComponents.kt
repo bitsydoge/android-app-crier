@@ -35,11 +35,11 @@ import kotlin.math.absoluteValue
 // Public Layouts
 // ------------------------------------------------
 @Composable
-fun ImageLayout1(image: ImageHolder) {
+fun ImageLayout1(imageList: List<ImageHolder>) {
 	SingleImage(
-		image = image, Modifier
+		imageList = imageList, 0, Modifier
 			.fillMaxWidth()
-			.aspectRatio(image.width / image.height.toFloat())
+			.aspectRatio(imageList[0].width / imageList[0].height.toFloat())
 	)
 }
 
@@ -47,14 +47,14 @@ fun ImageLayout1(image: ImageHolder) {
 fun ImageLayout2(imageList: List<ImageHolder>) {
 	Row(horizontalArrangement = Arrangement.Center) {
 		SingleImage(
-			imageList[0],
+			imageList, 0,
 			Modifier
 				.fillMaxWidth(0.5f)
 				.height(200.dp)
 				.padding(end = 2.dp)
 		)
 		SingleImage(
-			imageList[1],
+			imageList, 1,
 			Modifier
 				.fillMaxWidth(1.0f)
 				.height(200.dp)
@@ -67,21 +67,21 @@ fun ImageLayout2(imageList: List<ImageHolder>) {
 fun ImageLayout3(imageList: List<ImageHolder>) {
 	Row(horizontalArrangement = Arrangement.Center) {
 		SingleImage(
-			imageList[0],
+			imageList, 0,
 			Modifier
 				.fillMaxWidth(0.5f)
 				.height(200.dp)
 				.padding(end = 2.dp)
 		)
-		DoubleImageColumn(imageList[1], imageList[2], PaddingValues(start = 2.dp), 1.0f)
+		DoubleImageColumn(imageList, 1, 2, PaddingValues(start = 2.dp), 1.0f)
 	}
 }
 
 @Composable
 fun ImageLayout4(imageList: List<ImageHolder>) {
 	Row(horizontalArrangement = Arrangement.Center) {
-		DoubleImageColumn(imageList[0], imageList[1], PaddingValues(end = 2.dp), 0.5f)
-		DoubleImageColumn(imageList[2], imageList[3], PaddingValues(start = 2.dp), 1.0f)
+		DoubleImageColumn(imageList, 0, 1, PaddingValues(end = 2.dp), 0.5f)
+		DoubleImageColumn(imageList, 2, 3, PaddingValues(start = 2.dp), 1.0f)
 	}
 }
 
@@ -120,7 +120,7 @@ fun ImageLayoutN(imageList: List<ImageHolder>) {
 				},
 		) { page ->
 			SingleImage(
-				imageList[page],
+				imageList, page,
 				Modifier
 					.fillMaxWidth()
 					.height(200.dp)
@@ -140,11 +140,11 @@ fun ImageLayoutN(imageList: List<ImageHolder>) {
 // ------------------------------------------------
 
 @Composable
-private fun SingleImage(image: ImageHolder, modifier: Modifier) {
+private fun SingleImage(imageList: List<ImageHolder>, index: Int, modifier: Modifier) {
 	var openFull by remember { mutableStateOf(false) }
 	Image(
 		painter = rememberImagePainter(
-			data = image.getDataForPainter(),
+			data = imageList[index].getDataForPainter(),
 			builder = {
 				crossfade(true)
 			},
@@ -152,7 +152,7 @@ private fun SingleImage(image: ImageHolder, modifier: Modifier) {
 		"", //TODO
 		modifier = modifier.then(
 			Modifier
-				.background(image.colorAverage)
+				.background(imageList[index].colorAverage)
 				.clickable(onClick = {
 					openFull = true
 				})
@@ -162,7 +162,7 @@ private fun SingleImage(image: ImageHolder, modifier: Modifier) {
 
 	if (openFull) {
 		Dialog(onDismissRequest = { openFull = false }, properties = DialogProperties(usePlatformDefaultWidth = false)) {
-			DraggableImage(image = image, draggedOutside = {
+			DraggableImage(image = imageList[index], draggedOutside = {
 				openFull = false
 			})
 		}
@@ -214,7 +214,7 @@ fun DraggableImage(image: ImageHolder, draggedOutside: () -> (Unit)) {
 }
 
 @Composable
-private fun DoubleImageColumn(image: ImageHolder, image2: ImageHolder, paddingValues: PaddingValues, fraction: Float) {
+private fun DoubleImageColumn(imageList: List<ImageHolder>, indexTop: Int, indexBot: Int, paddingValues: PaddingValues, fraction: Float) {
 	Column(
 		modifier = Modifier
 			.fillMaxWidth(fraction)
@@ -222,14 +222,14 @@ private fun DoubleImageColumn(image: ImageHolder, image2: ImageHolder, paddingVa
 			.padding(paddingValues)
 	) {
 		SingleImage(
-			image,
+			imageList, indexTop,
 			Modifier
 				.fillMaxWidth(1.0f)
 				.fillMaxHeight(0.5f)
 				.padding(bottom = 2.dp)
 		)
 		SingleImage(
-			image2,
+			imageList, indexBot,
 			Modifier
 				.fillMaxWidth(1.0f)
 				.fillMaxHeight(1.0f)
