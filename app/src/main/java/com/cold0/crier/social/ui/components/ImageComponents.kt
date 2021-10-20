@@ -3,7 +3,7 @@ package com.cold0.crier.social.ui.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -176,13 +176,14 @@ fun DraggableImage(imageList: List<ImageHolder>, current: Int, draggedOutside: (
 	val configuration = LocalConfiguration.current
 	val offsetToQuit = configuration.screenHeightDp
 	Surface(
-		color = lerp(MaterialTheme.colors.surface, imageList[current].colorAverage, 0.2f).copy(
-			alpha = clamp(
-				1.0f - (offsetState.value.y.absoluteValue / offsetToQuit),
-				0.0f,
-				1.0f
-			)
-		),
+		color = lerp(MaterialTheme.colors.surface, imageList[current].colorAverage, 0.2f)
+			.copy(
+				alpha = clamp(
+					1.0f - (offsetState.value.y.absoluteValue / offsetToQuit),
+					0.0f,
+					1.0f
+				)
+			),
 		modifier = Modifier
 			.fillMaxSize()
 	) {
@@ -190,9 +191,9 @@ fun DraggableImage(imageList: List<ImageHolder>, current: Int, draggedOutside: (
 			modifier = Modifier
 				.fillMaxSize()
 				.pointerInput(Unit) {
-					detectDragGestures(
-						onDrag = { _, offset ->
-							offsetState.value += Offset(offset.x.toDp().value, offset.y.toDp().value)
+					detectVerticalDragGestures(
+						onVerticalDrag = { _, offset ->
+							offsetState.value += Offset(offset.toDp().value, offset.toDp().value)
 						},
 						onDragEnd = {
 							if (offsetState.value.y.absoluteValue > configuration.screenHeightDp / 4)
@@ -202,36 +203,16 @@ fun DraggableImage(imageList: List<ImageHolder>, current: Int, draggedOutside: (
 						})
 				}
 		) {
-			var size by remember { mutableStateOf(IntSize.Zero) }
-			val context = LocalContext.current
-			val imageLoader = LocalImageLoader.current
-
-			if (size != IntSize.Zero) {
-				for (image in imageList) {
-					val request = ImageRequest.Builder(context)
-						.data(image.getDataForPainter())
-						.size(size.width, size.height)
-						.build()
-					imageLoader.enqueue(request)
-				}
-			}
-
 			Column(
 				Modifier
 					.offset(0.dp, offsetState.value.y.dp)
 					.align(Alignment.Center)
 					.fillMaxSize()
-					.background(Color(0.5f, 0.5f, 0.5f, .1f))
 			) {
-				val pagerState = rememberPagerState()
 				HorizontalPager(
 					count = imageList.size,
-					state = pagerState,
 					modifier = Modifier
 						.fillMaxWidth()
-						.onGloballyPositioned { coordinates ->
-							size = coordinates.size
-						},
 				) { page ->
 					Image(
 						modifier = Modifier
@@ -240,12 +221,6 @@ fun DraggableImage(imageList: List<ImageHolder>, current: Int, draggedOutside: (
 						contentDescription = "" //TODO
 					)
 				}
-				HorizontalPagerIndicator(
-					pagerState = pagerState,
-					modifier = Modifier
-						.padding(16.dp)
-						.align(Alignment.CenterHorizontally)
-				)
 			}
 
 
