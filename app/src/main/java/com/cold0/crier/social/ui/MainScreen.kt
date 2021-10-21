@@ -6,12 +6,15 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.cold0.crier.social.MainViewModel
 import com.cold0.crier.social.ui.navigation.BottomBar
 import com.cold0.crier.social.ui.navigation.Drawer
 import com.cold0.crier.social.ui.navigation.TopBar
@@ -24,7 +27,11 @@ import com.cold0.crier.social.utils.NotImplementedAlert
 import kotlinx.coroutines.launch
 
 @Composable
-fun MainScreen() {
+fun MainScreen(
+	viewModel: MainViewModel = viewModel()
+) {
+	val postList by viewModel.postList.observeAsState()
+
 	val navController = rememberNavController()
 	val scaffoldState = rememberScaffoldState()
 	val scope = rememberCoroutineScope() // For open() and close() of the drawer
@@ -92,7 +99,7 @@ fun MainScreen() {
 		Surface {
 			NavHost(navController, startDestination = NavigationScreenItem.Home.route) {
 				composable(NavigationScreenItem.Home.route) {
-					HomeScreen(padding = paddingValues)
+					HomeScreen(padding = paddingValues, postList = postList ?: listOf())
 				}
 				composable(NavigationScreenItem.Search.route) {
 					SearchScreen()

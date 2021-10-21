@@ -1,6 +1,8 @@
 plugins {
 	id 'com.android.application'
 	id 'kotlin-android'
+	id 'kotlin-kapt'
+	id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -74,7 +76,9 @@ dependencies {
 
 	// Coil Image Loader
 	implementation "io.coil-kt:coil-compose:1.4.0"
-	implementation "io.coil-kt:coil-gif:1.4.0"
+
+	// LiveData
+	implementation "androidx.compose.runtime:runtime-livedata:1.0.4"
 
 	// Pager
 	implementation "com.google.accompanist:accompanist-pager:0.19.0"
@@ -82,6 +86,15 @@ dependencies {
 
 	// SplashScreen
 	implementation 'androidx.core:core-splashscreen:1.0.0-alpha02'
+
+	// Dagger Hilt
+	implementation 'com.google.dagger:hilt-android:2.39'
+	kapt "com.google.dagger:hilt-compiler:2.39"
+
+	// Room
+	implementation "androidx.room:room-runtime:2.3.0"
+	kapt "androidx.room:room-compiler:2.3.0"
+	implementation "androidx.room:room-ktx:2.3.0"
 
 	// -------------------------------
 	// Debug Only

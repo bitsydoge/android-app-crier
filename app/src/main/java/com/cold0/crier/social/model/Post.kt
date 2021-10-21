@@ -1,9 +1,16 @@
 package com.cold0.crier.social.model
 
+import androidx.annotation.NonNull
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.cold0.crier.social.data.DummyData.getUserFromUID
 import java.util.*
 
+@Entity
 data class Post(
+	@PrimaryKey
+	@NonNull
+	val uid: UUID,
 	val userUID: UUID,
 	val content: String,
 	val timestamp: Date = Date(),
