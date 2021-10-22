@@ -10,12 +10,14 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.cold0.crier.social.data.DummyData.getUserFromUID
 import com.cold0.crier.social.model.Post
+import com.cold0.crier.social.model.User
 import com.cold0.crier.social.ui.components.PostLayout
 
 
 @Composable
-fun HomeScreen(padding: PaddingValues = PaddingValues(), postList: List<Post>) {
+fun HomeScreen(padding: PaddingValues = PaddingValues(), postList: List<Post>, userList: List<User>) {
 	val lazyListState = rememberLazyListState()
 
 	Box(
@@ -25,7 +27,7 @@ fun HomeScreen(padding: PaddingValues = PaddingValues(), postList: List<Post>) {
 	) {
 		LazyColumn(state = lazyListState) {
 			items(postList) { post ->
-				PostLayout(post)
+				PostLayout(post, userList.getUserFromUID(post.userUID))
 				Divider()
 			}
 		}

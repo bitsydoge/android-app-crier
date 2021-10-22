@@ -31,29 +31,27 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.cold0.crier.social.R
-import com.cold0.crier.social.data.DummyData.getPostList
 import com.cold0.crier.social.model.ImageHolder
 import com.cold0.crier.social.model.Post
+import com.cold0.crier.social.model.User
 import com.cold0.crier.social.theme.ColorUtils.grayed
-import com.cold0.crier.social.theme.CrierSocialTheme
 import com.cold0.crier.social.utils.NotImplementedAlert
 
 @Composable
-fun PostLayout(post: Post) {
+fun PostLayout(post: Post, user: User) {
 	Row(
 		modifier = Modifier
 			.padding(all = 10.dp)
 			.background(MaterialTheme.colors.surface)
 	) {
-		PostUserAvatar(post)
+		PostUserAvatar(post, user)
 		Spacer(modifier = Modifier.size(12.dp))
 		Column {
-			PostUserInfo(post)
+			PostUserInfo(post, user)
 			PostContent(post)
 			Spacer(modifier = Modifier.size(4.dp))
 			PostActions(post)
@@ -62,8 +60,7 @@ fun PostLayout(post: Post) {
 }
 
 @Composable
-private fun PostUserAvatar(post: Post) {
-	val user = post.getUser()
+private fun PostUserAvatar(post: Post, user: User) {
 	var notImplementedAlertShow by remember { mutableStateOf(false) }
 	if (notImplementedAlertShow) {
 		NotImplementedAlert { notImplementedAlertShow = false }
@@ -85,8 +82,7 @@ private fun PostUserAvatar(post: Post) {
 }
 
 @Composable
-private fun PostUserInfo(post: Post) {
-	val user = post.getUser()
+private fun PostUserInfo(post: Post, user: User) {
 	Row(verticalAlignment = Alignment.CenterVertically) {
 		Text(
 			text = user.name,
@@ -260,24 +256,5 @@ private fun PostActions(post: Post) {
 				)
 			}
 		}
-	}
-}
-
-// ---------------------------------------------------------------
-// COMPOSE PREVIEW
-// ---------------------------------------------------------------
-@Preview(showBackground = true)
-@Composable
-fun MainPreview() {
-	CrierSocialTheme {
-		PostLayout(getPostList().first())
-	}
-}
-
-@Preview(showBackground = true)
-@Composable
-fun MainPreviewDark() {
-	CrierSocialTheme(true) {
-		PostLayout(getPostList().first())
 	}
 }

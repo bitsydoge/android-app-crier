@@ -6,15 +6,19 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.cold0.crier.social.model.Post
+import com.cold0.crier.social.model.User
 import com.cold0.crier.social.room.converter.DateConverter
+import com.cold0.crier.social.room.converter.ImageHolderConverter
 import com.cold0.crier.social.room.converter.UUIDConverter
 import com.cold0.crier.social.room.dao.PostDao
+import com.cold0.crier.social.room.dao.UserDao
 
-@Database(entities = [Post::class], version = 1, exportSchema = false)
-@TypeConverters(UUIDConverter::class, DateConverter::class)
+@Database(entities = [Post::class, User::class], version = 1, exportSchema = false)
+@TypeConverters(UUIDConverter::class, DateConverter::class, ImageHolderConverter::class)
 abstract class CrierDatabase : RoomDatabase() {
 
-	abstract fun characterDao(): PostDao
+	abstract fun postDao(): PostDao
+	abstract fun userDao(): UserDao
 
 	companion object {
 		@Volatile

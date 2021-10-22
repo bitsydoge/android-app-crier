@@ -6,7 +6,7 @@ import java.util.*
 object DateConverter {
 	@TypeConverter
 	fun timestampFromDate(date: Date): Long {
-		return date.getTime()
+		return date.time
 	}
 
 	@TypeConverter

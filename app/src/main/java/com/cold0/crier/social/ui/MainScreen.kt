@@ -26,11 +26,26 @@ import com.cold0.crier.social.ui.screens.SearchScreen
 import com.cold0.crier.social.utils.NotImplementedAlert
 import kotlinx.coroutines.launch
 
+
 @Composable
 fun MainScreen(
 	viewModel: MainViewModel = viewModel()
 ) {
 	val postList by viewModel.postList.observeAsState()
+	val userList by viewModel.userList.observeAsState()
+
+//	val path: File = LocalContext.current.filesDir
+//	val file = File(path, "posts.json")
+//	FileWriter(file).use { writer ->
+//		val gson = GsonBuilder().create()
+//		gson.toJson(postsList, writer)
+//	}
+//
+//	val file2 = File(path, "users.json")
+//	FileWriter(file2).use { writer ->
+//		val gson = GsonBuilder().create()
+//		gson.toJson(UserList, writer)
+//	}
 
 	val navController = rememberNavController()
 	val scaffoldState = rememberScaffoldState()
@@ -99,7 +114,7 @@ fun MainScreen(
 		Surface {
 			NavHost(navController, startDestination = NavigationScreenItem.Home.route) {
 				composable(NavigationScreenItem.Home.route) {
-					HomeScreen(padding = paddingValues, postList = postList ?: listOf())
+					HomeScreen(padding = paddingValues, postList = postList?.data ?: listOf(), userList = userList?.data ?: listOf())
 				}
 				composable(NavigationScreenItem.Search.route) {
 					SearchScreen()

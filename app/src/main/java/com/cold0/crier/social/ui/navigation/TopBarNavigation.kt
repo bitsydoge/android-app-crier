@@ -36,7 +36,7 @@ fun TopBar(
 					.height(32.dp)
 					.fillMaxWidth()
 			) {
-				val user = DummyData.getCurrentUser()
+				val user = DummyData.currentUser
 
 				// LEFT NAVIGATION
 				Row(
@@ -112,7 +112,7 @@ fun TopBarExtra(
 					.height(32.dp)
 					.fillMaxWidth()
 			) {
-				val user = DummyData.getCurrentUser()
+				val user = DummyData.currentUser
 
 				// LEFT NAVIGATION
 				Row(

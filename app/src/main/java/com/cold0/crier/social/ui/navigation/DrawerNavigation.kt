@@ -108,7 +108,7 @@ fun MenuItem(icon: ImageVector, name: String, onClick: () -> (Unit)) {
 
 @Composable
 fun UserPanel() {
-	val user = DummyData.getCurrentUser()
+	val user = DummyData.currentUser
 	Column(Modifier.padding(horizontal = 16.dp)) {
 		Image(
 			painter = rememberImagePainter(

@@ -99,8 +99,8 @@ object DummyData {
 		}
 
 		return Post(
-			getRandomUser().uid,
-			getRandomLoremIpsum(),
+			userUID = getRandomUser().uid,
+			content = getRandomLoremIpsum(),
 			timestamp = Date(),
 			likeCount = nextInt(0, 10),
 			reblogCount = nextInt(0, 10),
@@ -111,7 +111,7 @@ object DummyData {
 		)
 	}
 
-	private val userList = List(50) {
+	val UserList = List(50) {
 		User(
 			uid = UUID.randomUUID(),
 			name = getRandomName(),
@@ -123,27 +123,23 @@ object DummyData {
 		)
 	}
 
-	private val currentUser: User = userList.random()
-
-	private fun getRandomUser(): User = userList.random()
-
-	private val postsList = List(500) {
-		getRandomPost()
-	}
+	private fun getRandomUser(): User = UserList.random()
 
 	// ----------------------------------------------
 	// Public
 	// ----------------------------------------------
-	fun getCurrentUser(): User = currentUser
 
-	fun getUserFromUID(uid: UUID): User {
-		return userList.find { it.uid == uid } ?: User(
+	val currentUser: User = UserList.random()
+
+	val postsList = List(500) {
+		getRandomPost()
+	}
+
+	fun List<User>.getUserFromUID(uid: UUID): User {
+		return find { it.uid == uid } ?: User(
 			UUID(0, 0), "ERROR", "ERROR", verified = false,
 			follower = 0,
 			following = 0,
 		)
 	}
-
-	fun getPostList(): List<Post> = postsList
 }
-

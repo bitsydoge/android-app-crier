@@ -1,8 +1,12 @@
 package com.cold0.crier.social.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.util.*
 
+@Entity
 data class User(
+	@PrimaryKey
 	val uid: UUID,
 	val name: String,
 	val handle: String,
