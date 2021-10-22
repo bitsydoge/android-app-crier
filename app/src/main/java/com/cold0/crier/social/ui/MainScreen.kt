@@ -31,6 +31,7 @@ import kotlinx.coroutines.launch
 fun MainScreen(
 	viewModel: MainViewModel = viewModel()
 ) {
+	viewModel.navHostController = rememberNavController()
 	val postList by viewModel.postList.observeAsState()
 	val userList by viewModel.userList.observeAsState()
 
@@ -47,7 +48,6 @@ fun MainScreen(
 //		gson.toJson(UserList, writer)
 //	}
 
-	val navController = rememberNavController()
 	val scaffoldState = rememberScaffoldState()
 	val scope = rememberCoroutineScope() // For open() and close() of the drawer
 
@@ -56,7 +56,7 @@ fun MainScreen(
 		NotImplementedAlert { notImplementedAlertShow = false }
 	}
 
-	val navBackStackEntry by navController.currentBackStackEntryAsState()
+	val navBackStackEntry by viewModel.navHostController.currentBackStackEntryAsState()
 	val currentRoute = navBackStackEntry?.destination?.route
 	Scaffold(
 		scaffoldState = scaffoldState,
@@ -99,7 +99,7 @@ fun MainScreen(
 				}
 		},
 		bottomBar = {
-			BottomBar(navController)
+			BottomBar(viewModel.navHostController)
 		}
 	) { paddingValues: PaddingValues ->
 
@@ -112,7 +112,7 @@ fun MainScreen(
 		}
 
 		Surface {
-			NavHost(navController, startDestination = NavigationScreenItem.Home.route) {
+			NavHost(viewModel.navHostController, startDestination = NavigationScreenItem.Home.route) {
 				composable(NavigationScreenItem.Home.route) {
 					HomeScreen(padding = paddingValues, postList = postList?.data ?: listOf(), userList = userList?.data ?: listOf())
 				}
