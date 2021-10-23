@@ -34,24 +34,26 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
+import com.cold0.crier.social.MainViewModel
 import com.cold0.crier.social.R
 import com.cold0.crier.social.model.ImageHolder
 import com.cold0.crier.social.model.Post
 import com.cold0.crier.social.model.User
 import com.cold0.crier.social.theme.ColorUtils.grayed
+import com.cold0.crier.social.ui.ScreenNavitationsItems
 import com.cold0.crier.social.utils.NotImplementedAlert
 
 @Composable
-fun PostLayout(post: Post, user: User) {
+fun PostLayout(post: Post, user: User, viewModel: MainViewModel) {
 	Row(
 		modifier = Modifier
 			.padding(all = 10.dp)
 			.background(MaterialTheme.colors.surface)
 	) {
-		PostUserAvatar(post, user)
+		PostUserAvatar(user, viewModel)
 		Spacer(modifier = Modifier.size(12.dp))
 		Column {
-			PostUserInfo(post, user)
+			PostUserInfo(user)
 			PostContent(post)
 			Spacer(modifier = Modifier.size(4.dp))
 			PostActions(post)
@@ -60,11 +62,7 @@ fun PostLayout(post: Post, user: User) {
 }
 
 @Composable
-private fun PostUserAvatar(post: Post, user: User) {
-	var notImplementedAlertShow by remember { mutableStateOf(false) }
-	if (notImplementedAlertShow) {
-		NotImplementedAlert { notImplementedAlertShow = false }
-	}
+private fun PostUserAvatar(user: User, viewModel: MainViewModel) {
 	Image(
 		painter = rememberImagePainter(
 			data = user.avatar.getDataForPainter(),
@@ -76,13 +74,13 @@ private fun PostUserAvatar(post: Post, user: User) {
 		modifier = Modifier
 			.size(50.dp)
 			.clip(shape = CircleShape)
-			.clickable(onClick = { notImplementedAlertShow = true }),
+			.clickable(onClick = { viewModel.navigateTo(ScreenNavitationsItems.Profile.route) }),
 		contentScale = ContentScale.Crop
 	)
 }
 
 @Composable
-private fun PostUserInfo(post: Post, user: User) {
+private fun PostUserInfo(user: User) {
 	Row(verticalAlignment = Alignment.CenterVertically) {
 		Text(
 			text = user.name,

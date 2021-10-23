@@ -1,12 +1,15 @@
 package com.cold0.crier.social.ui
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -35,19 +38,6 @@ fun MainScreen(
 	val postList by viewModel.postList.observeAsState()
 	val userList by viewModel.userList.observeAsState()
 
-//	val path: File = LocalContext.current.filesDir
-//	val file = File(path, "posts.json")
-//	FileWriter(file).use { writer ->
-//		val gson = GsonBuilder().create()
-//		gson.toJson(postsList, writer)
-//	}
-//
-//	val file2 = File(path, "users.json")
-//	FileWriter(file2).use { writer ->
-//		val gson = GsonBuilder().create()
-//		gson.toJson(UserList, writer)
-//	}
-
 	val scaffoldState = rememberScaffoldState()
 	val scope = rememberCoroutineScope() // For open() and close() of the drawer
 
@@ -57,27 +47,30 @@ fun MainScreen(
 	}
 
 	val navBackStackEntry by viewModel.navHostController.currentBackStackEntryAsState()
-	val currentRoute = navBackStackEntry?.destination?.route
+	val currentRoute = navBackStackEntry?.destination?.route ?: ""
+
 	Scaffold(
 		scaffoldState = scaffoldState,
 		topBar = {
 			when (currentRoute) {
-				NavigationScreenItem.Home.route ->
+				ScreenNavitationsItems.Home.route ->
 					TopBar(
 						onNavIconPressed = { scope.launch { if (scaffoldState.drawerState.isClosed) scaffoldState.drawerState.open() else scaffoldState.drawerState.close() } },
 						onActionIconPressed = { notImplementedAlertShow = true }
 					)
-				NavigationScreenItem.Search.route -> TopBarExtra(
-					onNavIconPressed = { scope.launch { if (scaffoldState.drawerState.isClosed) scaffoldState.drawerState.open() else scaffoldState.drawerState.close() } },
-					onActionIconPressed = { notImplementedAlertShow = true },
-					title = "Search"
-				)
-				NavigationScreenItem.Notification.route -> TopBarExtra(
-					onNavIconPressed = { scope.launch { if (scaffoldState.drawerState.isClosed) scaffoldState.drawerState.open() else scaffoldState.drawerState.close() } },
-					onActionIconPressed = { notImplementedAlertShow = true },
-					title = "Notification"
-				)
-				NavigationScreenItem.Message.route ->
+				ScreenNavitationsItems.Search.route ->
+					TopBarExtra(
+						onNavIconPressed = { scope.launch { if (scaffoldState.drawerState.isClosed) scaffoldState.drawerState.open() else scaffoldState.drawerState.close() } },
+						onActionIconPressed = { notImplementedAlertShow = true },
+						title = "Search"
+					)
+				ScreenNavitationsItems.Notification.route ->
+					TopBarExtra(
+						onNavIconPressed = { scope.launch { if (scaffoldState.drawerState.isClosed) scaffoldState.drawerState.open() else scaffoldState.drawerState.close() } },
+						onActionIconPressed = { notImplementedAlertShow = true },
+						title = "Notification"
+					)
+				ScreenNavitationsItems.Message.route ->
 					TopBarExtra(
 						onNavIconPressed = { scope.launch { if (scaffoldState.drawerState.isClosed) scaffoldState.drawerState.open() else scaffoldState.drawerState.close() } },
 						onActionIconPressed = { notImplementedAlertShow = true },
@@ -85,11 +78,13 @@ fun MainScreen(
 					)
 			}
 		},
-		drawerContent = { Drawer() },
+		drawerContent = if (currentRoute in ScreenNavitationsItemsBottomBar.map { it.route }) {
+			{ Drawer() }
+		} else null,
 		drawerScrimColor = Color.Black.copy(alpha = 0.5f),
 		drawerElevation = 0.dp,
 		floatingActionButton = {
-			if (currentRoute == NavigationScreenItem.Home.route)
+			if (currentRoute == ScreenNavitationsItems.Home.route)
 				FloatingActionButton(
 					onClick = { notImplementedAlertShow = true },
 					backgroundColor = MaterialTheme.colors.primary,
@@ -99,11 +94,12 @@ fun MainScreen(
 				}
 		},
 		bottomBar = {
-			BottomBar(viewModel.navHostController)
+			if (currentRoute in ScreenNavitationsItemsBottomBar.map { it.route }) // Only show if current route is one of the botbar
+				BottomBar(viewModel.navHostController)
 		}
 	) { paddingValues: PaddingValues ->
 
-		if (scaffoldState.drawerState.isOpen) {
+		if (scaffoldState.drawerState.isOpen) { // Handle back to close Drawer
 			BackHandler {
 				scope.launch {
 					scaffoldState.drawerState.close()
@@ -112,20 +108,28 @@ fun MainScreen(
 		}
 
 		Surface {
-			NavHost(viewModel.navHostController, startDestination = NavigationScreenItem.Home.route) {
-				composable(NavigationScreenItem.Home.route) {
-					HomeScreen(padding = paddingValues, postList = postList?.data ?: listOf(), userList = userList?.data ?: listOf())
+			NavHost(viewModel.navHostController, startDestination = ScreenNavitationsItems.Home.route) {
+				composable(ScreenNavitationsItems.Home.route) {
+					HomeScreen(viewModel = viewModel, padding = paddingValues, postList = postList?.data ?: listOf(), userList = userList?.data ?: listOf())
 				}
-				composable(NavigationScreenItem.Search.route) {
+				composable(ScreenNavitationsItems.Search.route) {
 					SearchScreen()
 				}
-				composable(NavigationScreenItem.Notification.route) {
+				composable(ScreenNavitationsItems.Notification.route) {
 					NotificationScreen()
 				}
-				composable(NavigationScreenItem.Message.route) {
+				composable(ScreenNavitationsItems.Message.route) {
 					MessageScreen()
 				}
+				composable(
+					ScreenNavitationsItems.Profile.route
+				) {
+					Box(Modifier.fillMaxSize()) {
+						Text("Hello World")
+					}
+				}
 			}
+
 		}
 	}
 }

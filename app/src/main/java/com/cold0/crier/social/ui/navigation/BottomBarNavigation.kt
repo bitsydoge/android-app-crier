@@ -3,23 +3,15 @@ package com.cold0.crier.social.ui.navigation
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.cold0.crier.social.theme.CrierSocialTheme
-import com.cold0.crier.social.ui.NavigationScreenItem
+import com.cold0.crier.social.ui.ScreenNavitationsItemsBottomBar
 
 @Composable
 fun BottomBar(navController: NavController) {
-	val items = listOf(
-		NavigationScreenItem.Home,
-		NavigationScreenItem.Search,
-		NavigationScreenItem.Notification,
-		NavigationScreenItem.Message,
-	)
 	Column {
 		Divider()
 		BottomNavigation(
@@ -27,9 +19,9 @@ fun BottomBar(navController: NavController) {
 			backgroundColor = MaterialTheme.colors.surface,
 			contentColor = MaterialTheme.colors.onSurface,
 		) {
-			val navBackStackEntry by navController.currentBackStackEntryAsState()
+			val navBackStackEntry = navController.currentBackStackEntry
 			val currentRoute = navBackStackEntry?.destination?.route
-			items.forEach { item ->
+			ScreenNavitationsItemsBottomBar.forEach { item ->
 				BottomNavigationItem(
 					icon = { Icon(item.icon, contentDescription = item.title) },
 					selected = currentRoute == item.route,

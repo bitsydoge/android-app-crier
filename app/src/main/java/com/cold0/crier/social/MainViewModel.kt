@@ -13,4 +13,8 @@ class MainViewModel @Inject constructor(
 	lateinit var navHostController: NavHostController
 	val postList = repository.getPosts()
 	val userList = repository.getUsers()
+
+	fun navigateTo(route: String) {
+		navHostController.navigate(route)
+	}
 }

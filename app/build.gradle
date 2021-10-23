@@ -70,6 +70,7 @@ dependencies {
 
 	// Navigation
 	implementation 'androidx.navigation:navigation-compose:2.4.0-alpha10'
+	// implementation "com.google.accompanist:accompanist-navigation-animation:0.20.0" // Not compatible yet with Compose 1.1 :/
 
 	// Extra Icons
 	implementation "androidx.compose.material:material-icons-extended:$compose_version"
