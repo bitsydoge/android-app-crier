@@ -74,7 +74,7 @@ private fun PostUserAvatar(user: User, viewModel: MainViewModel) {
 		modifier = Modifier
 			.size(50.dp)
 			.clip(shape = CircleShape)
-			.clickable(onClick = { viewModel.navigateTo(ScreenNavitationsItems.Profile.route) }),
+			.clickable(onClick = { viewModel.navigateTo("${ScreenNavitationsItems.Profile.route}/${user.uid}") }),
 		contentScale = ContentScale.Crop
 	)
 }
