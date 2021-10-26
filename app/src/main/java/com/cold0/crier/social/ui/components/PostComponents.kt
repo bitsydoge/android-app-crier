@@ -145,6 +145,7 @@ private fun PostContent(post: Post) {
 			}
 		}
 	)
+	// Show image if post have Image
 	if (post.imageList.isNotEmpty()) {
 		Spacer(modifier = Modifier.height(8.dp))
 		MultipleImageLayout(imageList = post.imageList)

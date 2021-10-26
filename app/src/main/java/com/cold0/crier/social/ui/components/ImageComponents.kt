@@ -105,7 +105,7 @@ fun ImageLayoutN(imageList: List<ImageHolder>) {
 		}
 	}
 
-	Column(
+	Box(
 		Modifier
 			.fillMaxSize()
 			.background(Color(0.5f, 0.5f, 0.5f, .1f))
@@ -131,7 +131,7 @@ fun ImageLayoutN(imageList: List<ImageHolder>) {
 			pagerState = pagerState,
 			modifier = Modifier
 				.padding(16.dp)
-				.align(Alignment.CenterHorizontally)
+				.align(Alignment.BottomCenter)
 		)
 	}
 }
