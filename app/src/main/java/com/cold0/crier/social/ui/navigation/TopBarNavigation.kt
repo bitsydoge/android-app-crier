@@ -1,8 +1,9 @@
 package com.cold0.crier.social.ui.navigation
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Campaign
 import androidx.compose.material.icons.outlined.AutoAwesome
@@ -18,162 +19,171 @@ import coil.transform.CircleCropTransformation
 import com.cold0.crier.social.data.DummyData
 import com.cold0.crier.social.theme.CrierSocialTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(
-	modifier: Modifier = Modifier,
-	onNavIconPressed: () -> Unit = {},
-	onActionIconPressed: () -> Unit = {}
+    modifier: Modifier = Modifier,
+    onNavIconPressed: () -> Unit = {},
+    onActionIconPressed: () -> Unit = {}
 ) {
-	Column {
-		TopAppBar(
-			backgroundColor = MaterialTheme.colors.surface,
-			contentColor = MaterialTheme.colors.onSurface,
-			modifier = modifier,
-			elevation = 0.dp,
-		) {
-			Box(
-				Modifier
-					.height(32.dp)
-					.fillMaxWidth()
-			) {
-				val user = DummyData.currentUser
-
-				// LEFT NAVIGATION
-				Row(
+    Column {
+        TopAppBar(
+            modifier = modifier.background(MaterialTheme.colorScheme.surface),
+            title = @Composable {
+                Box(
 					Modifier
-						.fillMaxHeight()
-						.align(Alignment.CenterStart)
-				) {
-					IconButton(
-						onClick = { onNavIconPressed() },
-						enabled = true,
-					) {
-						Image(
-							painter = rememberImagePainter(
-								data = user.avatar.getDataForPainter(),
-								builder = {
-									crossfade(true)
-									transformations(CircleCropTransformation())
-								}
-							),
-							"",
-							modifier = Modifier
-								.size(32.dp),
-							contentScale = ContentScale.Crop
-						)
-					}
-				}
+						.height(32.dp)
+						.fillMaxWidth()
+                ) {
+                    val user = DummyData.currentUser
 
-				// TITLE
-				Row(
-					Modifier
-						.fillMaxHeight()
-						.align(Alignment.Center)
-				) {
-					Icon(Icons.Filled.Campaign, "TODO", tint = MaterialTheme.colors.primary, modifier = Modifier.size(32.dp))
-				}
+                    // LEFT NAVIGATION
+                    Row(
+						Modifier
+							.fillMaxHeight()
+							.align(Alignment.CenterStart)
+                    ) {
+                        IconButton(
+                            onClick = { onNavIconPressed() },
+                            enabled = true,
+                        ) {
+                            Image(
+                                painter = rememberImagePainter(
+                                    data = user.avatar.getDataForPainter(),
+                                    builder = {
+                                        crossfade(true)
+                                        transformations(CircleCropTransformation())
+                                    }
+                                ),
+                                "",
+                                modifier = Modifier
+                                    .size(32.dp),
+                                contentScale = ContentScale.Crop
+                            )
+                        }
+                    }
 
-				// ACTIONS
-				Row(
-					Modifier
-						.fillMaxHeight()
-						.align(Alignment.CenterEnd),
-					content = {
-						IconButton(
-							onClick = { onActionIconPressed() },
-							enabled = true,
-						) {
-							Icon(Icons.Outlined.AutoAwesome, "TODO", modifier = Modifier.size(32.dp))
-						}
-					}
-				)
-			}
-		}
-		Divider()
-	}
+                    // TITLE
+                    Row(
+						Modifier
+							.fillMaxHeight()
+							.align(Alignment.Center)
+                    ) {
+                        Icon(
+                            Icons.Filled.Campaign,
+                            "TODO",
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(32.dp)
+                        )
+                    }
+
+                    // ACTIONS
+                    Row(
+						Modifier
+							.fillMaxHeight()
+							.align(Alignment.CenterEnd),
+                        content = {
+                            IconButton(
+                                onClick = { onActionIconPressed() },
+                                enabled = true,
+                            ) {
+                                Icon(
+                                    Icons.Outlined.AutoAwesome,
+                                    "TODO",
+                                    modifier = Modifier.size(32.dp)
+                                )
+                            }
+                        }
+                    )
+                }
+            })
+        HorizontalDivider()
+    }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBarExtra(
-	modifier: Modifier = Modifier,
-	onNavIconPressed: () -> Unit = {},
-	onActionIconPressed: () -> Unit = {},
-	title: String
+    modifier: Modifier = Modifier,
+    onNavIconPressed: @Composable () -> Unit = {},
+    onActionIconPressed: () -> Unit = {},
+    title: String
 ) {
-	Column {
-		TopAppBar(
-			backgroundColor = MaterialTheme.colors.surface,
-			contentColor = MaterialTheme.colors.onSurface,
-			modifier = modifier,
-			elevation = 0.dp,
-		) {
-			Box(
-				Modifier
-					.height(32.dp)
-					.fillMaxWidth()
-			) {
-				val user = DummyData.currentUser
-
-				// LEFT NAVIGATION
-				Row(
+    Column {
+        TopAppBar(
+            modifier = modifier.background(MaterialTheme.colorScheme.surface),
+            title = @Composable {
+                Box(
 					Modifier
-						.fillMaxHeight()
-						.align(Alignment.CenterStart)
-				) {
-					IconButton(
-						onClick = { onNavIconPressed() },
-						enabled = true,
-					) {
-						Image(
-							painter = rememberImagePainter(
-								data = user.avatar.getDataForPainter(),
-								builder = {
-									crossfade(true)
-									transformations(CircleCropTransformation())
-								}
-							),
-							"",
-							modifier = Modifier
-								.size(32.dp),
-							contentScale = ContentScale.Crop
-						)
-					}
-					Text(
-						text = title,
-						modifier = Modifier.padding(start = 16.dp, top = 4.dp),
-						style = MaterialTheme.typography.h6,
-						color = MaterialTheme.colors.onSurface,
-						fontWeight = FontWeight.Bold
-					)
-				}
+						.height(32.dp)
+						.fillMaxWidth()
+                ) {
+                    val user = DummyData.currentUser
 
-				// TITLE
-				Row(
-					Modifier
-						.fillMaxHeight()
-						.align(Alignment.Center)
-				) {
+                    // LEFT NAVIGATION
+                    Row(
+						Modifier
+							.fillMaxHeight()
+							.align(Alignment.CenterStart)
+                    ) {
+                        IconButton(
+                            onClick = { onNavIconPressed() },
+                            enabled = true,
+                        ) {
+                            Image(
+                                painter = rememberImagePainter(
+                                    data = user.avatar.getDataForPainter(),
+                                    builder = {
+                                        crossfade(true)
+                                        transformations(CircleCropTransformation())
+                                    }
+                                ),
+                                "",
+                                modifier = Modifier
+                                    .size(32.dp),
+                                contentScale = ContentScale.Crop
+                            )
+                        }
+                        Text(
+                            text = title,
+                            modifier = Modifier.padding(start = 16.dp, top = 4.dp),
+                            style = MaterialTheme.typography.titleSmall,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
 
-				}
+                    // TITLE
+                    Row(
+						Modifier
+							.fillMaxHeight()
+							.align(Alignment.Center)
+                    ) {
 
-				// ACTIONS
-				Row(
-					Modifier
-						.fillMaxHeight()
-						.align(Alignment.CenterEnd),
-					content = {
-						IconButton(
-							onClick = { onActionIconPressed() },
-							enabled = true,
-						) {
-							Icon(Icons.Outlined.AutoAwesome, "TODO", modifier = Modifier.size(32.dp))
-						}
-					}
-				)
-			}
-		}
-		Divider()
-	}
+                    }
+
+                    // ACTIONS
+                    Row(
+						Modifier
+							.fillMaxHeight()
+							.align(Alignment.CenterEnd),
+                        content = {
+                            IconButton(
+                                onClick = { onActionIconPressed() },
+                                enabled = true,
+                            ) {
+                                Icon(
+                                    Icons.Outlined.AutoAwesome,
+                                    "TODO",
+                                    modifier = Modifier.size(32.dp)
+                                )
+                            }
+                        }
+                    )
+                }
+            })
+        HorizontalDivider()
+    }
 }
 
 // ---------------------------------------------------------------
@@ -182,15 +192,15 @@ fun TopBarExtra(
 @Preview
 @Composable
 fun TopBarPreview() {
-	CrierSocialTheme(darkTheme = false) {
-		TopBar()
-	}
+    CrierSocialTheme(darkTheme = false) {
+        TopBar()
+    }
 }
 
 @Preview
 @Composable
 fun TopBarPreviewDark() {
-	CrierSocialTheme(darkTheme = true) {
-		TopBar()
-	}
+    CrierSocialTheme(darkTheme = true) {
+        TopBar()
+    }
 }

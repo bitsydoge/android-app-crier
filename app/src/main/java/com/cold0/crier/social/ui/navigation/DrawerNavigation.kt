@@ -3,8 +3,9 @@ package com.cold0.crier.social.ui.navigation
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.ListAlt
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.ListAlt
@@ -42,19 +43,19 @@ fun Drawer() {
 			NotImplementedAlert { notImplementedAlertShow = false }
 		}
 		UserPanel()
-		Divider()
+		HorizontalDivider()
 		Spacer(modifier = Modifier.height(8.dp))
-		Divider()
+		HorizontalDivider()
 		MenuPanel()
 		Spacer(modifier = Modifier.height(8.dp))
-		Divider()
+		HorizontalDivider()
 		Spacer(modifier = Modifier.height(24.dp))
 		Text(
 			modifier = Modifier
 				.padding(horizontal = 16.dp)
 				.clickable(onClick = {
 					notImplementedAlertShow = true
-				}), text = "Parameters and confidentiality", fontSize = MaterialTheme.typography.body1.fontSize * 1.1
+				}), text = "Parameters and confidentiality", fontSize = MaterialTheme.typography.bodyLarge.fontSize * 1.1
 		)
 		Spacer(modifier = Modifier.height(24.dp))
 		Text(
@@ -62,7 +63,7 @@ fun Drawer() {
 				.padding(horizontal = 16.dp)
 				.clickable(onClick = {
 					notImplementedAlertShow = true
-				}), text = "Information and Licences", fontSize = MaterialTheme.typography.body1.fontSize * 1.1
+				}), text = "Information and Licences", fontSize = MaterialTheme.typography.bodyLarge.fontSize * 1.1
 		)
 	}
 }
@@ -77,7 +78,7 @@ fun MenuPanel() {
 		MenuItem(Icons.Outlined.Person, "Profile") {
 			notImplementedAlertShow = true
 		}
-		MenuItem(Icons.Outlined.ListAlt, "Lists") {
+		MenuItem(Icons.AutoMirrored.Outlined.ListAlt, "Lists") {
 			notImplementedAlertShow = true
 		}
 		MenuItem(Icons.Outlined.MapsUgc, "Subjects") {
@@ -101,7 +102,7 @@ fun MenuItem(icon: ImageVector, name: String, onClick: () -> (Unit)) {
 	{
 		Icon(icon, "TODO", Modifier.size(28.dp))
 		Spacer(modifier = Modifier.width(16.dp))
-		Text(modifier = Modifier.align(CenterVertically), text = name, fontSize = MaterialTheme.typography.body1.fontSize * 1.1)
+		Text(modifier = Modifier.align(CenterVertically), text = name, fontSize = MaterialTheme.typography.bodyLarge.fontSize * 1.1)
 	}
 
 }
@@ -127,7 +128,7 @@ fun UserPanel() {
 		Box(Modifier.fillMaxWidth()) {
 			Column(Modifier.align(Alignment.CenterStart)) {
 				Text(text = user.name, fontWeight = FontWeight.Bold)
-				Text(text = "@${user.handle}", color = MaterialTheme.colors.onSurface.grayed())
+				Text(text = "@${user.handle}", color = MaterialTheme.colorScheme.onSurface.grayed())
 			}
 			IconButton(modifier = Modifier.align(Alignment.CenterEnd), onClick = {
 
@@ -138,13 +139,13 @@ fun UserPanel() {
 		}
 		Spacer(modifier = Modifier.height(8.dp))
 		Row(Modifier.fillMaxWidth(), Arrangement.SpaceAround) {
-			ProvideTextStyle(value = MaterialTheme.typography.body1.copy(fontSize = MaterialTheme.typography.body1.fontSize * 0.9)) {
+			ProvideTextStyle(value = MaterialTheme.typography.bodyLarge.copy(fontSize = MaterialTheme.typography.bodyLarge.fontSize * 0.9)) {
 				Text(
 					buildAnnotatedString {
 						withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
 							append(user.following.toString())
 						}
-						withStyle(style = SpanStyle(color = MaterialTheme.colors.onSurface.grayed())) {
+						withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onSurface.grayed())) {
 							append("  Following")
 						}
 					}
@@ -154,7 +155,7 @@ fun UserPanel() {
 						withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
 							append(user.follower.toString())
 						}
-						withStyle(style = SpanStyle(color = MaterialTheme.colors.onSurface.grayed())) {
+						withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onSurface.grayed())) {
 							append("  Followers")
 						}
 					}

@@ -8,10 +8,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.VerifiedUser
@@ -48,7 +48,7 @@ fun PostLayout(post: Post, user: User, viewModel: MainViewModel) {
 	Row(
 		modifier = Modifier
 			.padding(all = 10.dp)
-			.background(MaterialTheme.colors.surface)
+			.background(MaterialTheme.colorScheme.surface)
 	) {
 		PostUserAvatar(user, viewModel)
 		Spacer(modifier = Modifier.size(12.dp))
@@ -92,12 +92,12 @@ private fun PostUserInfo(user: User) {
 			Icon(
 				Icons.Filled.VerifiedUser,
 				"",
-				tint = MaterialTheme.colors.primary,
+				tint = MaterialTheme.colorScheme.primary,
 				modifier = Modifier.size(16.dp)
 			)
 		}
 		Spacer(modifier = Modifier.size(5.dp))
-		Text(text = "@${user.handle}", color = MaterialTheme.colors.onSurface.grayed(), maxLines = 1)
+		Text(text = "@${user.handle}", color = MaterialTheme.colorScheme.onSurface.grayed(), maxLines = 1)
 	}
 }
 
@@ -114,17 +114,17 @@ private fun PostContent(post: Post) {
 					annotation = splitWhitespace[0]
 				)
 				numberClickable++
-				withStyle(style = SpanStyle(fontWeight = FontWeight.Bold, color = MaterialTheme.colors.primary)) {
+				withStyle(style = SpanStyle(fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)) {
 					append("#${splitWhitespace[0]}")
 				}
 				pop()
 				if (splitWhitespace.size > 1) { // Even so don't contain #hashtag
-					withStyle(style = SpanStyle(color = MaterialTheme.colors.onSurface)) {
+					withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onSurface)) {
 						append(" " + splitWhitespace.subList(1, splitWhitespace.size).joinToString(" "))
 					}
 				}
 			} else {
-				withStyle(style = SpanStyle(color = MaterialTheme.colors.onSurface)) {
+				withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onSurface)) {
 					append(split)
 				}
 			}
@@ -214,7 +214,7 @@ private fun PostActions(post: Post) {
 			) {
 				Icon(
 					painterResource(R.drawable.ic_reblog),
-					tint = if (post.reblogged) MaterialTheme.colors.primary else MaterialTheme.colors.onSurface,
+					tint = if (post.reblogged) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
 					contentDescription = null, //TODO,
 					modifier = Modifier.size(32.dp)
 				)
@@ -233,7 +233,7 @@ private fun PostActions(post: Post) {
 			) {
 				Icon(
 					if (post.liked) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
-					tint = if (post.liked) MaterialTheme.colors.primary else MaterialTheme.colors.onSurface,
+					tint = if (post.liked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
 					contentDescription = null//TODO
 				)
 			}
