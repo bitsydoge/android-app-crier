@@ -5,7 +5,7 @@ import com.cold0.crier.social.model.ImageHolder
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
-import java.util.*
+import java.util.Collections
 
 object ImageHolderConverter {
 	private var gson: Gson = Gson()

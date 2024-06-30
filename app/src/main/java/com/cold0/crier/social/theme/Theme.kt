@@ -1,19 +1,19 @@
 package com.cold0.crier.social.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-private val DarkColorPalette = darkColors(
+private val DarkColorPalette = darkColorScheme(
 	// Main Colors
 	primary = Color(0xFFB33737),
-	primaryVariant = Color(0xFF510000),
+	primaryContainer = Color(0xFF510000),
 
 	secondary = Color(0xFFFF8282),
-	secondaryVariant = Color(0xFFCB4D4D),
+	secondaryContainer = Color(0xFFCB4D4D),
 
 	// Surfaces Colors
 	background = Color(0xFF181818),
@@ -27,13 +27,13 @@ private val DarkColorPalette = darkColors(
 	onError = Color.White,
 )
 
-private val LightColorPalette = lightColors(
+private val LightColorPalette = lightColorScheme(
 	// Main Colors
 	primary = Color(0xFFB33737),
-	primaryVariant = Color(0xFF510000),
+	primaryContainer = Color(0xFF510000),
 
 	secondary = Color(0xFFFF8282),
-	secondaryVariant = Color(0xFFCB4D4D),
+	secondaryContainer = Color(0xFFCB4D4D),
 
 	// Surfaces Colors
 	background = Color(0xFFfafafa),
@@ -50,7 +50,7 @@ private val LightColorPalette = lightColors(
 @Composable
 fun CrierSocialTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
 	MaterialTheme(
-		colors = if (darkTheme) {
+		colorScheme = if (darkTheme) {
 			DarkColorPalette
 		} else {
 			LightColorPalette

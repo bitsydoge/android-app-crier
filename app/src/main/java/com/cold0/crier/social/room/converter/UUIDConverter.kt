@@ -1,7 +1,7 @@
 package com.cold0.crier.social.room.converter
 
 import androidx.room.TypeConverter
-import java.util.*
+import java.util.UUID
 
 object UUIDConverter {
 	@TypeConverter

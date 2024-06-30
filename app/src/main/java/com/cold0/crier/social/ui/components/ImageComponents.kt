@@ -38,18 +38,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.math.MathUtils.clamp
-
 import coil.compose.LocalImageLoader
 import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
-
+import com.cold0.crier.social.model.ImageHolder
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
-
 import kotlin.math.absoluteValue
-
-import com.cold0.crier.social.model.ImageHolder
 
 // ------------------------------------------------
 // Public Layouts

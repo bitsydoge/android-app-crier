@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.cold0.crier.social.model.Post
-import java.util.*
+import java.util.UUID
 
 @Dao
 interface PostDao {

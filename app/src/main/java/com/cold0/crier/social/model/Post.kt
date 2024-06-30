@@ -1,14 +1,13 @@
 package com.cold0.crier.social.model
 
-import androidx.annotation.NonNull
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.*
+import java.util.Date
+import java.util.UUID
 
 @Entity
 data class Post(
 	@PrimaryKey
-	@NonNull
 	val uid: UUID = UUID.randomUUID(),
 	val userUID: UUID,
 	val content: String,

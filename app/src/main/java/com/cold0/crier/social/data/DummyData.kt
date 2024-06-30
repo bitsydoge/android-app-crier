@@ -7,7 +7,8 @@ import androidx.core.graphics.ColorUtils.HSLToColor
 import com.cold0.crier.social.model.ImageHolder
 import com.cold0.crier.social.model.Post
 import com.cold0.crier.social.model.User
-import java.util.*
+import java.util.Date
+import java.util.UUID
 import kotlin.random.Random.Default.nextBoolean
 import kotlin.random.Random.Default.nextFloat
 import kotlin.random.Random.Default.nextInt
